@@ -22,12 +22,16 @@ namespace OnboardingSIGDB1.Data.Mapeamentos
                 .IsRequired();
 
             builder.Property(x => x.DataContratacao).IsRequired();
-            builder.Property(x => x.EmpresaId).IsRequired();
+            builder.Property(x => x.EmpresaId).IsRequired(false);
 
             builder.HasOne(x => x.Empresa)
                 .WithMany()
                 .HasForeignKey(x => x.EmpresaId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Ignore(x => x.Invalid);
+            builder.Ignore(x => x.Valid);
+            builder.Ignore(x => x.ValidationResult);
         }
     }
 }

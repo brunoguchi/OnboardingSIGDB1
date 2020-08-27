@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnboardingSIGDB1.Data.Repositorio;
 
 namespace OnboardingSIGDB1.Data.Migrations
 {
     [DbContext(typeof(SIGDB1Context))]
-    partial class SIGDB1ContextModelSnapshot : ModelSnapshot
+    [Migration("20200827205002_v7")]
+    partial class v7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -16,6 +16,8 @@ namespace OnboardingSIGDB1.API.Mappers
             CreateMap<EmpresaFiltroDto, EmpresaFiltro>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cnpj)));
             CreateMap<EmpresaDto, Empresa>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cnpj)));
             CreateMap<CargoDto, Cargo>();
+            CreateMap<FuncionarioDto, Funcionario>().ForMember(x => x.Cpf, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cpf)));
+            CreateMap<FuncionarioFiltroDto, FuncionarioFiltro>().ForMember(x => x.Cpf, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cpf))); ;
         }
 
         private string FormatarDocumento(string documento)
