@@ -88,5 +88,15 @@ namespace OnboardingSIGDB1.API.Controllers
             servicoDeDominioDeFuncionarios.Deletar(id);
             return Ok();
         }
+
+        /// <summary>
+        /// api/empresas/2
+        /// </summary>
+        [HttpPut("vincularEmpresa")]
+        public async Task<IActionResult> PutVincular([FromBody] FuncionarioDto dto)
+        {
+            servicoDeDominioDeFuncionarios.VincularFuncionarioAEmpresa(iMapper.Map<Funcionario>(dto));
+            return Ok();
+        }
     }
 }

@@ -35,7 +35,11 @@ namespace OnboardingSIGDB1.API
                 option.UseSqlServer(Configuration.GetConnectionString("ConexaoPadrao"));
             });
 
-            services.AddMvc(opt => opt.Filters.Add<NotificationFilter>())
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add<NotificationFilter>();
+                opt.Filters.Add<CustomExceptionFilter>();
+            })
                 .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

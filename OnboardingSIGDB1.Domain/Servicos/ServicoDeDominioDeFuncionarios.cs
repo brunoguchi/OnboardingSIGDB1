@@ -74,5 +74,18 @@ namespace OnboardingSIGDB1.Domain.Servicos
         {
             return repositorioDeConsultaDeFuncionarios.RecuperarPorId(id);
         }
+
+        public void VincularFuncionarioAEmpresa(Funcionario funcionario)
+        {
+            var funcionarioGravado = repositorioDeConsultaDeFuncionarios.RecuperarPorId(funcionario.Id);
+
+            if (funcionarioGravado.EmpresaId == null || funcionarioGravado.EmpresaId == 0)
+            {
+                funcionarioGravado.EmpresaId = funcionario.EmpresaId;
+                unitOfWork.Update(funcionarioGravado);
+            }
+            else
+                notificationContext.AddNotification(string.Empty, "Este funcionário já possui vínculo com uma empresa");
+        }
     }
 }

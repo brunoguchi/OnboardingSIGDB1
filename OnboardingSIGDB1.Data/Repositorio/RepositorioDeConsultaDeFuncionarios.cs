@@ -1,4 +1,5 @@
-﻿using OnboardingSIGDB1.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnboardingSIGDB1.Domain.Entities;
 using OnboardingSIGDB1.Interfaces.Data;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace OnboardingSIGDB1.Data.Repositorio
 
         public Funcionario RecuperarPorId(int id)
         {
-            var dados = _context.Funcionarios.Where(x => x.Id == id).FirstOrDefault();
+            var dados = _context.Funcionarios.Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
             return dados;
         }
     }
