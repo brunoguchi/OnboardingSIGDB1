@@ -14,6 +14,7 @@ namespace OnboardingSIGDB1.IOC
             services.AddScoped<IRepositorioSIGDB1, RepositorioSIGDB1>();
             services.AddScoped<IRepositorioDeConsultaDeEmpresas, RepositorioDeConsultaDeEmpresas>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRepositorioDeConsultaDeCargos, RepositorioDeConsultaDeCargos>();
         }
     }
 }

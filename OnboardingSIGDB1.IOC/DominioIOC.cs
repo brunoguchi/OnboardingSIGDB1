@@ -13,6 +13,7 @@ namespace OnboardingSIGDB1.IOC
         {
             services.AddScoped<IServicoDeDominioDeEmpresas, ServicoDeDominioDeEmpresas>();
             services.AddScoped<IServicoDeValidacaoDeEmpresas, ServicoDeValidacaoDeEmpresas>();
+            services.AddScoped<IServicoDeDominioDeCargos, ServicoDeDominioDeCargos>();
         }
     }
 }

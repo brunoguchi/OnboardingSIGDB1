@@ -48,10 +48,10 @@ namespace OnboardingSIGDB1.Domain.Servicos
 
         public void Deletar(int id)
         {
-            var empresa = repositorioDeConsultaDeCargos.RecuperarPorId(id);
+            var cargo = repositorioDeConsultaDeCargos.RecuperarPorId(id);
 
-            if (empresa != null)
-                unitOfWork.Delete(empresa);
+            if (cargo != null)
+                unitOfWork.Delete(cargo);
             else
                 notificationContext.AddNotification(string.Empty, "Cargo não localizado");
         }

@@ -13,7 +13,8 @@ namespace OnboardingSIGDB1.API.Mappers
         public DomainToDTOMappingProfile()
         {
             CreateMap<EmpresaFiltro, EmpresaFiltroDto>();
-            CreateMap<Empresa, EmpresaDto>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cnpj))); ;
+            CreateMap<Empresa, EmpresaDto>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => this.FormatarDocumento(src.Cnpj)));
+            CreateMap<Cargo, CargoDto>();
         }
 
         private string FormatarDocumento(string documento)
