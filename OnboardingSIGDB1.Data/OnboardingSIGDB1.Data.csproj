@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200825124025_inicial.cs" />
+    <Compile Remove="Migrations\20200825124025_inicial.Designer.cs" />
+    <Compile Remove="Migrations\20200825131748_v2.cs" />
+    <Compile Remove="Migrations\20200825131748_v2.Designer.cs" />
+    <Compile Remove="Migrations\20200825162556_v3.cs" />
+    <Compile Remove="Migrations\20200825162556_v3.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnboardingSIGDB1.Domain\OnboardingSIGDB1.Domain.csproj" />
+    <ProjectReference Include="..\OnboardingSIGDB1.Interfaces\OnboardingSIGDB1.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
