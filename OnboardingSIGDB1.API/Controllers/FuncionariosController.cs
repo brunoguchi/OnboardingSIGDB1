@@ -90,7 +90,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/funcionarios/2
+        /// api/funcionarios/vincularEmpresa
         /// </summary>
         [HttpPut("vincularEmpresa")]
         public async Task<IActionResult> PutVincularEmpresa([FromBody] FuncionarioDto dto)
@@ -99,6 +99,9 @@ namespace OnboardingSIGDB1.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// api/funcionarios/vincularCargo
+        /// </summary>
         [HttpPut("vincularCargo")]
         public async Task<IActionResult> PutVincularCargo([FromBody] FuncionarioCargoDto dto)
         {

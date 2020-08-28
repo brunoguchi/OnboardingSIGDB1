@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using OnboardingSIGDB1.API.Extensions;
 using OnboardingSIGDB1.API.Filters;
 using OnboardingSIGDB1.API.Mappers;
@@ -43,6 +44,11 @@ namespace OnboardingSIGDB1.API
                 .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnboardingSIGDB1 API", Version = "v1" });
+            });
+
             services.AddRepositorios();
             services.AddServicosDeDominio();
             services.AddAutoMapper();
@@ -54,6 +60,13 @@ namespace OnboardingSIGDB1.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnboardingSIGDB1 API 1.0");
+                });
             }
 
             app.AddCustomMiddleware();
