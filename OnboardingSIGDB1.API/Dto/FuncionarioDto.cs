@@ -12,5 +12,6 @@ namespace OnboardingSIGDB1.API.Dto
         public string Cpf { get; set; }
         public DateTime DataContratacao { get; set; }
         public int? EmpresaId { get; set; }
+        public List<FuncionarioCargoDto> FuncionariosCargos { get; set; }
     }
 }

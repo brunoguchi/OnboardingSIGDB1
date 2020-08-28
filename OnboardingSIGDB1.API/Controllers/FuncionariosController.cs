@@ -26,7 +26,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas
+        /// api/funcionarios
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -37,7 +37,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/10
+        /// api/funcionarios/10
         /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -47,7 +47,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/pesquisar
+        /// api/funcionarios/pesquisar
         /// </summary>
         [HttpGet("pesquisar")]
         public async Task<IActionResult> Get([FromQuery] FuncionarioFiltroDto filtro)
@@ -57,7 +57,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/
+        /// api/funcionarios/
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] FuncionarioDto dto)
@@ -68,7 +68,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/2
+        /// api/funcionarios/2
         /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] FuncionarioDto dto)
@@ -80,7 +80,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/9
+        /// api/funcionarios/9
         /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -90,12 +90,19 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/2
+        /// api/funcionarios/2
         /// </summary>
         [HttpPut("vincularEmpresa")]
-        public async Task<IActionResult> PutVincular([FromBody] FuncionarioDto dto)
+        public async Task<IActionResult> PutVincularEmpresa([FromBody] FuncionarioDto dto)
         {
             servicoDeDominioDeFuncionarios.VincularFuncionarioAEmpresa(iMapper.Map<Funcionario>(dto));
+            return Ok();
+        }
+
+        [HttpPut("vincularCargo")]
+        public async Task<IActionResult> PutVincularCargo([FromBody] FuncionarioCargoDto dto)
+        {
+            servicoDeDominioDeFuncionarios.VincularFuncionarioAoCargo(iMapper.Map<FuncionarioCargo>(dto));
             return Ok();
         }
     }

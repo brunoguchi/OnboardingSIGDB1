@@ -26,7 +26,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas
+        /// api/cargos
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -37,7 +37,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/10
+        /// api/cargos/10
         /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -47,7 +47,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/
+        /// api/cargos/
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CargoDto dto)
@@ -58,7 +58,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/2
+        /// api/cargos/2
         /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CargoDto dto)
@@ -70,7 +70,7 @@ namespace OnboardingSIGDB1.API.Controllers
         }
 
         /// <summary>
-        /// api/empresas/9
+        /// api/cargos/9
         /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

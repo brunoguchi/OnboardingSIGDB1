@@ -43,7 +43,26 @@ namespace OnboardingSIGDB1.Data.Repositorio
 
         public Funcionario RecuperarPorId(int id)
         {
-            var dados = _context.Funcionarios.Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+            var dados = _context.Funcionarios.Where(x => x.Id == id)
+                .AsNoTracking()
+                .Include(x => x.FuncionariosCargos)
+                .Select(x => new Funcionario
+                {
+                    Id = x.Id,
+                    Cpf = x.Cpf,
+                    DataContratacao = x.DataContratacao,
+                    EmpresaId = x.EmpresaId,
+                    Nome = x.Nome,
+                    FuncionariosCargos = x.FuncionariosCargos.OrderByDescending(w => w.DataDeVinculo).Take(1).ToList()
+                })
+                .FirstOrDefault();
+
+            return dados;
+        }
+
+        public Funcionario RecuperarPorIdComTodosOsCargos(int id)
+        {
+            var dados = _context.Funcionarios.Where(x => x.Id == id).AsNoTracking().Include(x => x.FuncionariosCargos).FirstOrDefault();
             return dados;
         }
     }

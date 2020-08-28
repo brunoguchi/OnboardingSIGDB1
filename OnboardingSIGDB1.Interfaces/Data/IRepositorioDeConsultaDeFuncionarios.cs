@@ -11,5 +11,6 @@ namespace OnboardingSIGDB1.Interfaces.Data
         Funcionario RecuperarPorId(int id);
         IEnumerable<Funcionario> RecuperarPorFiltro(FuncionarioFiltro filtro);
         Funcionario RecuperarPorCpf(string cnpj);
+        Funcionario RecuperarPorIdComTodosOsCargos(int id);
     }
 }

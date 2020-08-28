@@ -14,5 +14,6 @@ namespace OnboardingSIGDB1.Interfaces.Domain
         void Atualizar(Funcionario funcionario);
         void Deletar(int id);
         void VincularFuncionarioAEmpresa(Funcionario funcionario);
+        void VincularFuncionarioAoCargo(FuncionarioCargo funcionarioCargo);
     }
 }

@@ -4,6 +4,7 @@ using OnboardingSIGDB1.Interfaces.Data;
 using OnboardingSIGDB1.Interfaces.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace OnboardingSIGDB1.Domain.Servicos
@@ -14,16 +15,19 @@ namespace OnboardingSIGDB1.Domain.Servicos
         private readonly IRepositorioDeConsultaDeFuncionarios repositorioDeConsultaDeFuncionarios;
         private readonly NotificationContext notificationContext;
         private readonly IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios;
+        private readonly IRepositorioDeConsultaDeCargos repositorioDeConsultaDeCargos;
 
         public ServicoDeDominioDeFuncionarios(IUnitOfWork unitOfWork,
             IRepositorioDeConsultaDeFuncionarios repositorioDeConsultaDeFuncionarios,
             NotificationContext notificationContext,
-            IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios)
+            IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios,
+            IRepositorioDeConsultaDeCargos repositorioDeConsultaDeCargos)
         {
             this.unitOfWork = unitOfWork;
             this.repositorioDeConsultaDeFuncionarios = repositorioDeConsultaDeFuncionarios;
             this.notificationContext = notificationContext;
             this.servicoDeValidacaoDeFuncionarios = servicoDeValidacaoDeFuncionarios;
+            this.repositorioDeConsultaDeCargos = repositorioDeConsultaDeCargos;
         }
 
         public void Adicionar(Funcionario funcionario)
@@ -86,6 +90,31 @@ namespace OnboardingSIGDB1.Domain.Servicos
             }
             else
                 notificationContext.AddNotification(string.Empty, "Este funcionário já possui vínculo com uma empresa");
+        }
+
+        public void VincularFuncionarioAoCargo(FuncionarioCargo funcionarioCargo)
+        {
+            var funcionarioGravado = repositorioDeConsultaDeFuncionarios.RecuperarPorIdComTodosOsCargos(funcionarioCargo.FuncionarioId);
+            var cargoGravado = repositorioDeConsultaDeCargos.RecuperarPorId(funcionarioCargo.CargoId);
+
+            if (funcionarioGravado != null && cargoGravado != null)
+            {
+                if (funcionarioGravado.EmpresaId != null && funcionarioGravado.EmpresaId != 0)
+                {
+                    var possuiCargo = funcionarioGravado.FuncionariosCargos.Where(x => x.CargoId == funcionarioCargo.CargoId).Count() > 0;
+
+                    if (!possuiCargo)
+                        unitOfWork.Add(funcionarioCargo);
+                    else
+                        notificationContext.AddNotification(string.Empty, "Este funcionário já está vinculado a este cargo");
+                }
+                else
+                    notificationContext.AddNotification(string.Empty, "Necessário vincular o funcionário a uma empresa");
+            }
+            else
+            {
+                notificationContext.AddNotification(string.Empty, "Dados inválidos para vincular funcionário a um cargo");
+            }
         }
     }
 }
