@@ -1,15 +1,12 @@
-﻿using OnboardingSIGDB1.Interfaces.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using OnboardingSIGDB1.Domain.Base.Interfaces;
 
 namespace OnboardingSIGDB1.Data.Repositorio
 {
-    public class RepositorioSIGDB1 : IRepositorioSIGDB1
+    public class RepositorioBase : IRepositorioBase
     {
         private readonly SIGDB1Context _context;
 
-        public RepositorioSIGDB1(SIGDB1Context context)
+        public RepositorioBase(SIGDB1Context context)
         {
             _context = context;
         }

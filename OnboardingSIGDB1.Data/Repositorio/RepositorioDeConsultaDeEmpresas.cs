@@ -1,5 +1,5 @@
-﻿using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Interfaces.Data;
+﻿using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;

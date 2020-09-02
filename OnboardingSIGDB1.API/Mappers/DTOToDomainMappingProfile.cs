@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging.Internal;
 using OnboardingSIGDB1.API.Dto;
-using OnboardingSIGDB1.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 
 namespace OnboardingSIGDB1.API.Mappers
 {

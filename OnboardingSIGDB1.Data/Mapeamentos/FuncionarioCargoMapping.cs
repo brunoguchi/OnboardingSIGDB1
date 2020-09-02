@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OnboardingSIGDB1.Domain.Entities;
-using System.Security.Cryptography.X509Certificates;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 
 namespace OnboardingSIGDB1.Data.Mapeamentos
 {

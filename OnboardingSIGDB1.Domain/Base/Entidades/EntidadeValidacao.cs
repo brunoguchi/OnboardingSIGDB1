@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnboardingSIGDB1.Domain.Entities
+namespace OnboardingSIGDB1.Domain.Base.Entidades
 {
     public abstract class EntidadeValidacao
     {

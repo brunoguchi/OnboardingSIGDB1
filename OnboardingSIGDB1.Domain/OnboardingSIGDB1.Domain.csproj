@@ -6,8 +6,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnboardingSIGDB1.Core\OnboardingSIGDB1.Core.csproj" />
-    <ProjectReference Include="..\OnboardingSIGDB1.Domain.Entities\OnboardingSIGDB1.Domain.Entities.csproj" />
-    <ProjectReference Include="..\OnboardingSIGDB1.Interfaces\OnboardingSIGDB1.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cargos\Dtos\" />
+    <Folder Include="Cargos\Interfaces\Validadores\" />
+    <Folder Include="Cargos\Validadores\" />
+    <Folder Include="Empresas\Dtos\" />
+    <Folder Include="Funcionarios\Dtos\" />
   </ItemGroup>
 
 </Project>

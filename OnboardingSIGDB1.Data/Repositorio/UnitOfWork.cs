@@ -1,4 +1,4 @@
-﻿using OnboardingSIGDB1.Interfaces.Data;
+﻿using OnboardingSIGDB1.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

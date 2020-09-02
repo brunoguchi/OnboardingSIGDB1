@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using OnboardingSIGDB1.Domain.Base.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnboardingSIGDB1.Domain.Entities
+namespace OnboardingSIGDB1.Domain.Empresas.Entidades
 {
     public class Empresa : EntidadeValidacao
     {

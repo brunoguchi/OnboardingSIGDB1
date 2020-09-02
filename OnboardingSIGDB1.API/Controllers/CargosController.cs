@@ -6,8 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnboardingSIGDB1.API.Dto;
-using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Interfaces.Domain;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
 
 namespace OnboardingSIGDB1.API.Controllers
 {

@@ -4,8 +4,4 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\OnboardingSIGDB1.Domain.Entities\OnboardingSIGDB1.Domain.Entities.csproj" />
-  </ItemGroup>
-
 </Project>

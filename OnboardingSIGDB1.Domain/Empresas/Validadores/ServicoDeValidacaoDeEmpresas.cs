@@ -1,7 +1,7 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
-using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Interfaces.Data;
-using OnboardingSIGDB1.Interfaces.Domain;
+using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +27,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             ValidarCnpj(empresa.Cnpj);
         }
 
-        public void ValidarCnpj(string cnpj)
+        private void ValidarCnpj(string cnpj)
         {
             string pattern = @"^(\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2})|(\d{14})$";
             Regex regex = new Regex(pattern);
@@ -36,7 +36,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
                 notificationContext.AddNotification(string.Empty, "CNPJ inválido");
         }
 
-        public void ValidarSeEmpresaExistentePorDocumento(string cnpj)
+        private void ValidarSeEmpresaExistentePorDocumento(string cnpj)
         {
             var empresa = repositorioDeConsultaDeEmpresas.RecuperarPorCnpj(cnpj);
 

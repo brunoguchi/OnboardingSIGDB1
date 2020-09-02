@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnboardingSIGDB1.Data\OnboardingSIGDB1.Data.csproj" />
-    <ProjectReference Include="..\OnboardingSIGDB1.Interfaces\OnboardingSIGDB1.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OnboardingSIGDB1.Domain.Entities;
+using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;

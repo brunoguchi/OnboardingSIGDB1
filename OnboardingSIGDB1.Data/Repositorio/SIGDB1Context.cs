@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnboardingSIGDB1.Data.Mapeamentos;
-using OnboardingSIGDB1.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 
 namespace OnboardingSIGDB1.Data.Repositorio
 {

@@ -1,7 +1,10 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
-using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Interfaces.Data;
-using OnboardingSIGDB1.Interfaces.Domain;
+using OnboardingSIGDB1.Domain.Base.Interfaces;
+using OnboardingSIGDB1.Domain.Cargos.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Validadores;
 using System;
 using System.Collections.Generic;
 using System.Linq;

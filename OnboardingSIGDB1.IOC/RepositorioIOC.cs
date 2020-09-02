@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OnboardingSIGDB1.Data.Repositorio;
-using OnboardingSIGDB1.Interfaces.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using OnboardingSIGDB1.Domain.Base.Interfaces;
+using OnboardingSIGDB1.Domain.Cargos.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios;
 
 namespace OnboardingSIGDB1.IOC
 {
@@ -11,7 +11,7 @@ namespace OnboardingSIGDB1.IOC
     {
         public static void AddRepositorios(this IServiceCollection services)
         {
-            services.AddScoped<IRepositorioSIGDB1, RepositorioSIGDB1>();
+            services.AddScoped<IRepositorioBase, RepositorioBase>();
             services.AddScoped<IRepositorioDeConsultaDeEmpresas, RepositorioDeConsultaDeEmpresas>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepositorioDeConsultaDeCargos, RepositorioDeConsultaDeCargos>();

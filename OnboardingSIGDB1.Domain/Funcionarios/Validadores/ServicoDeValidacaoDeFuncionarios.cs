@@ -1,7 +1,7 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
-using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Interfaces.Data;
-using OnboardingSIGDB1.Interfaces.Domain;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Validadores;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +27,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             ValidarSeFuncionarioExistentePorDocumento(funcionario.Cpf);
         }
 
-        public void ValidarCpf(string cnpj)
+        private void ValidarCpf(string cnpj)
         {
             string pattern = @"^(\d{3}\.\d{3}\.\d{3}\-\d{2})|(\d{11})$";
             Regex regex = new Regex(pattern);
@@ -36,7 +36,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
                 notificationContext.AddNotification(string.Empty, "CPF inválido");
         }
 
-        public void ValidarSeFuncionarioExistentePorDocumento(string cpf)
+        private void ValidarSeFuncionarioExistentePorDocumento(string cpf)
         {
             var funcionario = repositorioDeConsultaDeFuncionarios.RecuperarPorCpf(cpf);
 

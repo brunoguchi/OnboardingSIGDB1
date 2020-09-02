@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using OnboardingSIGDB1.Core.Notifications;
-using OnboardingSIGDB1.Interfaces.Data;
+using OnboardingSIGDB1.Domain.Base.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;

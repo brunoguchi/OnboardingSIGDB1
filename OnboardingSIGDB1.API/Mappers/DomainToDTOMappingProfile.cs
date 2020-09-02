@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using OnboardingSIGDB1.API.Dto;
-using OnboardingSIGDB1.Domain.Entities;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.API.Mappers
 {

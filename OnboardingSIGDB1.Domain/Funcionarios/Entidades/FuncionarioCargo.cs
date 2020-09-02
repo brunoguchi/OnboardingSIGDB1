@@ -1,8 +1,9 @@
-﻿using System;
+﻿using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnboardingSIGDB1.Domain.Entities
+namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
 {
     public class FuncionarioCargo
     {

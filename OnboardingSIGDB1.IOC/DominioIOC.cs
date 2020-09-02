@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Servicos;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Validadores;
 using OnboardingSIGDB1.Domain.Servicos;
-using OnboardingSIGDB1.Interfaces.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OnboardingSIGDB1.IOC
 {
