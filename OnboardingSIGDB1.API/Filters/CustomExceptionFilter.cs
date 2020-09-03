@@ -31,7 +31,7 @@ namespace OnboardingSIGDB1.API.Filters
             }
             else
             {
-                var erro = new { Mensagem = context.Exception.GetBaseException().Message };
+                var erro = new { Erro = true, Mensagem = context.Exception.GetBaseException().Message };
 
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 context.HttpContext.Response.ContentType = "application/json";

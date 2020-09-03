@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Cargos\Mappings\" />
-    <Folder Include="Empresas\Consultas\" />
     <Folder Include="Empresas\Mappings\" />
     <Folder Include="Funcionarios\Consultas\" />
     <Folder Include="Funcionarios\Mappings\" />

@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnboardingSIGDB1.Domain.Empresas.Dtos;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Servicos;
 
 namespace OnboardingSIGDB1.API.Controllers
@@ -12,14 +13,23 @@ namespace OnboardingSIGDB1.API.Controllers
     [ApiController]
     public class EmpresasController : ControllerBase
     {
-        private readonly IServicoDeDominioDeEmpresas servicoDeDominioDeEmpresas;
+        private readonly IArmazenadorDeEmpresas armazenadorDeEmpresas;
+        private readonly IAtualizadorDeEmpresas atualizadorDeEmpresas;
+        private readonly IRemovedorDeEmpresas removedorDeEmpresas;
+        private readonly IConsultasDeEmpresas consultasDeEmpresas;
         private readonly IMapper iMapper;
 
-        public EmpresasController(IServicoDeDominioDeEmpresas servicoDeDominioDeEmpresas,
-                                  IMapper iMapper)
+        public EmpresasController(IMapper iMapper,
+            IArmazenadorDeEmpresas armazenadorDeEmpresas,
+            IAtualizadorDeEmpresas atualizadorDeEmpresas,
+            IRemovedorDeEmpresas removedorDeEmpresas,
+            IConsultasDeEmpresas consultasDeEmpresas)
         {
-            this.servicoDeDominioDeEmpresas = servicoDeDominioDeEmpresas;
             this.iMapper = iMapper;
+            this.armazenadorDeEmpresas = armazenadorDeEmpresas;
+            this.atualizadorDeEmpresas = atualizadorDeEmpresas;
+            this.removedorDeEmpresas = removedorDeEmpresas;
+            this.consultasDeEmpresas = consultasDeEmpresas;
         }
 
         /// <summary>
@@ -28,9 +38,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var dados = servicoDeDominioDeEmpresas.ListarTodas();
+            var resultado = await consultasDeEmpresas.ListarTodas();
 
-            return Ok(iMapper.Map<List<EmpresaDto>>(dados));
+            return Ok(resultado);
         }
 
         /// <summary>
@@ -39,8 +49,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = servicoDeDominioDeEmpresas.RecuperarPorId(id);
-            return Ok(iMapper.Map<EmpresaDto>(resultado));
+            var resultado = await consultasDeEmpresas.RecuperarPorId(id);
+
+            return Ok(resultado);
         }
 
         /// <summary>
@@ -49,8 +60,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet("pesquisar")]
         public async Task<IActionResult> Get([FromQuery] EmpresaFiltroDto filtro)
         {
-            var resultado = servicoDeDominioDeEmpresas.PesquisarPorFiltro(iMapper.Map<EmpresaFiltro>(filtro));
-            return Ok(iMapper.Map<List<EmpresaDto>>(resultado));
+            var resultado = await consultasDeEmpresas.RecuperarPorFiltro(filtro);
+
+            return Ok(resultado);
         }
 
         /// <summary>
@@ -59,7 +71,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmpresaDto dto)
         {
-            servicoDeDominioDeEmpresas.Adicionar(iMapper.Map<Empresa>(dto));
+            await armazenadorDeEmpresas.Adicionar(iMapper.Map<Empresa>(dto));
 
             return Ok();
         }
@@ -71,7 +83,7 @@ namespace OnboardingSIGDB1.API.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] EmpresaDto dto)
         {
             dto.Id = id;
-            servicoDeDominioDeEmpresas.Atualizar(iMapper.Map<Empresa>(dto));
+            await atualizadorDeEmpresas.Atualizar(iMapper.Map<Empresa>(dto));
 
             return Ok();
         }
@@ -82,7 +94,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            servicoDeDominioDeEmpresas.Deletar(id);
+            await removedorDeEmpresas.Deletar(id);
             return Ok();
         }
     }

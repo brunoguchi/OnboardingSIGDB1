@@ -6,28 +6,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.Domain.Servicos
 {
     public class ServicoDeValidacaoDeEmpresas : IServicoDeValidacaoDeEmpresas
     {
-        private readonly IRepositorioDeConsultaDeEmpresas repositorioDeConsultaDeEmpresas;
+        private readonly IConsultasDeEmpresas consultasDeEmpresas;
         private readonly NotificationContext notificationContext;
 
-        public ServicoDeValidacaoDeEmpresas(IRepositorioDeConsultaDeEmpresas repositorioDeConsultaDeEmpresas,
+        public ServicoDeValidacaoDeEmpresas(IConsultasDeEmpresas consultasDeEmpresas,
             NotificationContext notificationContext)
         {
-            this.repositorioDeConsultaDeEmpresas = repositorioDeConsultaDeEmpresas;
+            this.consultasDeEmpresas = consultasDeEmpresas;
             this.notificationContext = notificationContext;
         }
 
-        public void Executar(Empresa empresa)
+        public async Task Executar(Empresa empresa)
         {
-            ValidarSeEmpresaExistentePorDocumento(empresa.Cnpj);
-            ValidarCnpj(empresa.Cnpj);
+            await ValidarSeEmpresaExistentePorDocumento(empresa.Cnpj);
+            await ValidarCnpj(empresa.Cnpj);
         }
 
-        private void ValidarCnpj(string cnpj)
+        private async Task ValidarCnpj(string cnpj)
         {
             string pattern = @"^(\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2})|(\d{14})$";
             Regex regex = new Regex(pattern);
@@ -36,9 +37,9 @@ namespace OnboardingSIGDB1.Domain.Servicos
                 notificationContext.AddNotification(string.Empty, "CNPJ inválido");
         }
 
-        private void ValidarSeEmpresaExistentePorDocumento(string cnpj)
+        private async Task ValidarSeEmpresaExistentePorDocumento(string cnpj)
         {
-            var empresa = repositorioDeConsultaDeEmpresas.RecuperarPorCnpj(cnpj);
+            var empresa = await consultasDeEmpresas.RecuperarPorCnpj(cnpj);
 
             if (empresa != null)
                 notificationContext.AddNotification(string.Empty, "Já existe uma empresa cadastrada para este CNPJ");

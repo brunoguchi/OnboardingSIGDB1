@@ -24,15 +24,8 @@ namespace OnboardingSIGDB1.Data.Cargos.Consultas
         public async Task<IEnumerable<CargoDto>> ListarTodos()
         {
             var consulta = await GetAll();
-
-            var resultado = (from x in consulta
-                             select new CargoDto
-                             {
-                                 Id = x.Id,
-                                 Descricao = x.Descricao
-                             }).ToList();
-
-            return resultado;
+          
+            return _iMapper.Map<List<CargoDto>>(consulta);
         }
 
         public async Task<CargoDto> RecuperarPorId(int id)

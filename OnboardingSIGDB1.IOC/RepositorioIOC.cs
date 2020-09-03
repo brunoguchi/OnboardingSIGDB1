@@ -13,8 +13,8 @@ namespace OnboardingSIGDB1.IOC
         public static void AddRepositorios(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepositorioBase<>), typeof(RepositorioBase<>));
-            services.AddScoped<IRepositorioDeConsultaDeEmpresas, RepositorioDeConsultaDeEmpresas>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IConsultasDeEmpresas, ConsultasDeEmpresas>();
             services.AddScoped<IConsultasDeCargos, ConsultasDeCargos>();
             services.AddScoped<IRepositorioDeConsultaDeFuncionarios, RepositorioDeConsultaDeFuncionarios>();
         }

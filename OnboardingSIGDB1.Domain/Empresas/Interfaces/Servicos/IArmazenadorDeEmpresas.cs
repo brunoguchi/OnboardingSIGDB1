@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores
+namespace OnboardingSIGDB1.Domain.Empresas.Interfaces.Servicos
 {
-    public interface IServicoDeValidacaoDeEmpresas
+    public interface IArmazenadorDeEmpresas
     {
-        Task Executar(Empresa empresa);
+        Task Adicionar(Empresa empresa);
     }
 }
