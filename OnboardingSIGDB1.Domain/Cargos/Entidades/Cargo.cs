@@ -1,15 +1,16 @@
 ﻿using FluentValidation;
 using OnboardingSIGDB1.Domain.Base.Entidades;
+using OnboardingSIGDB1.Domain.Base.Interfaces;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.Domain.Cargos.Entidades
 {
     public class Cargo : EntidadeValidacao
     {
-        public int Id { get; set; }
         public string Descricao { get; set; }
         public List<FuncionarioCargo> FuncionariosCargos { get; set; }
 

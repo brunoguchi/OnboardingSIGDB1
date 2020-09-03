@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnboardingSIGDB1.API.Dto;
+using OnboardingSIGDB1.Domain.Funcionarios.Dtos;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
 

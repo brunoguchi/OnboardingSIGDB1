@@ -1,6 +1,5 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
-using OnboardingSIGDB1.Domain.Cargos.Interfaces.Repositorios;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
@@ -14,23 +13,20 @@ namespace OnboardingSIGDB1.Domain.Servicos
 {
     public class ServicoDeDominioDeFuncionarios : IServicoDeDominioDeFuncionarios
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IRepositorioBase<Funcionario> repositorioBase;
         private readonly IRepositorioDeConsultaDeFuncionarios repositorioDeConsultaDeFuncionarios;
         private readonly NotificationContext notificationContext;
         private readonly IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios;
-        private readonly IRepositorioDeConsultaDeCargos repositorioDeConsultaDeCargos;
 
-        public ServicoDeDominioDeFuncionarios(IUnitOfWork unitOfWork,
+        public ServicoDeDominioDeFuncionarios(IRepositorioBase<Funcionario> repositorioBase,
             IRepositorioDeConsultaDeFuncionarios repositorioDeConsultaDeFuncionarios,
             NotificationContext notificationContext,
-            IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios,
-            IRepositorioDeConsultaDeCargos repositorioDeConsultaDeCargos)
+            IServicoDeValidacaoDeFuncionarios servicoDeValidacaoDeFuncionarios)
         {
-            this.unitOfWork = unitOfWork;
+            this.repositorioBase = repositorioBase;
             this.repositorioDeConsultaDeFuncionarios = repositorioDeConsultaDeFuncionarios;
             this.notificationContext = notificationContext;
             this.servicoDeValidacaoDeFuncionarios = servicoDeValidacaoDeFuncionarios;
-            this.repositorioDeConsultaDeCargos = repositorioDeConsultaDeCargos;
         }
 
         public void Adicionar(Funcionario funcionario)
@@ -41,7 +37,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             if (funcionario.Valid)
             {
                 if (!notificationContext.HasNotifications)
-                    unitOfWork.Add(funcionario);
+                    repositorioBase.Add(funcionario);
             }
             else
                 notificationContext.AddNotifications(funcionario.ValidationResult);
@@ -52,7 +48,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             funcionario.Validar();
 
             if (funcionario.Valid)
-                unitOfWork.Update(funcionario);
+                repositorioBase.Update(funcionario);
             else
                 notificationContext.AddNotifications(funcionario.ValidationResult);
         }
@@ -62,7 +58,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             var funcionario = repositorioDeConsultaDeFuncionarios.RecuperarPorId(id);
 
             if (funcionario != null)
-                unitOfWork.Delete(funcionario);
+                repositorioBase.Remove(funcionario);
             else
                 notificationContext.AddNotification(string.Empty, "Funcionário não localizado");
         }
@@ -89,7 +85,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             if (funcionarioGravado.EmpresaId == null || funcionarioGravado.EmpresaId == 0)
             {
                 funcionarioGravado.EmpresaId = funcionario.EmpresaId;
-                unitOfWork.Update(funcionarioGravado);
+                repositorioBase.Update(funcionarioGravado);
             }
             else
                 notificationContext.AddNotification(string.Empty, "Este funcionário já possui vínculo com uma empresa");
@@ -97,27 +93,27 @@ namespace OnboardingSIGDB1.Domain.Servicos
 
         public void VincularFuncionarioAoCargo(FuncionarioCargo funcionarioCargo)
         {
-            var funcionarioGravado = repositorioDeConsultaDeFuncionarios.RecuperarPorIdComTodosOsCargos(funcionarioCargo.FuncionarioId);
-            var cargoGravado = repositorioDeConsultaDeCargos.RecuperarPorId(funcionarioCargo.CargoId);
+            //var funcionarioGravado = repositorioDeConsultaDeFuncionarios.RecuperarPorIdComTodosOsCargos(funcionarioCargo.FuncionarioId);
+            //var cargoGravado = repositorioDeConsultaDeCargos.RecuperarPorId(funcionarioCargo.CargoId);
 
-            if (funcionarioGravado != null && cargoGravado != null)
-            {
-                if (funcionarioGravado.EmpresaId != null && funcionarioGravado.EmpresaId != 0)
-                {
-                    var possuiCargo = funcionarioGravado.FuncionariosCargos.Where(x => x.CargoId == funcionarioCargo.CargoId).Count() > 0;
+            //if (funcionarioGravado != null && cargoGravado != null)
+            //{
+            //    if (funcionarioGravado.EmpresaId != null && funcionarioGravado.EmpresaId != 0)
+            //    {
+            //        var possuiCargo = funcionarioGravado.FuncionariosCargos.Where(x => x.CargoId == funcionarioCargo.CargoId).Count() > 0;
 
-                    if (!possuiCargo)
-                        unitOfWork.Add(funcionarioCargo);
-                    else
-                        notificationContext.AddNotification(string.Empty, "Este funcionário já está vinculado a este cargo");
-                }
-                else
-                    notificationContext.AddNotification(string.Empty, "Necessário vincular o funcionário a uma empresa");
-            }
-            else
-            {
-                notificationContext.AddNotification(string.Empty, "Dados inválidos para vincular funcionário a um cargo");
-            }
+            //        if (!possuiCargo)
+            //            repositorioBase.Add(funcionarioCargo);
+            //        else
+            //            notificationContext.AddNotification(string.Empty, "Este funcionário já está vinculado a este cargo");
+            //    }
+            //    else
+            //        notificationContext.AddNotification(string.Empty, "Necessário vincular o funcionário a uma empresa");
+            //}
+            //else
+            //{
+            //    notificationContext.AddNotification(string.Empty, "Dados inválidos para vincular funcionário a um cargo");
+            //}
         }
     }
 }

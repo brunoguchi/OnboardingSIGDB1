@@ -14,12 +14,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OnboardingSIGDB1.Domain\OnboardingSIGDB1.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cargos\Mappings\" />
+    <Folder Include="Empresas\Consultas\" />
+    <Folder Include="Empresas\Mappings\" />
+    <Folder Include="Funcionarios\Consultas\" />
+    <Folder Include="Funcionarios\Mappings\" />
   </ItemGroup>
 
 </Project>

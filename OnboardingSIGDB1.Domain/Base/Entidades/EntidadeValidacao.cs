@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnboardingSIGDB1.Domain.Base.Entidades
 {
-    public abstract class EntidadeValidacao
+    public abstract class EntidadeValidacao : Identificador
     {
         public bool Valid { get; private set; }
         public bool Invalid => !Valid;

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnboardingSIGDB1.API.Dto;
+using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Cargos.Interfaces.Consultas;
 using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
 
 namespace OnboardingSIGDB1.API.Controllers
@@ -15,13 +16,22 @@ namespace OnboardingSIGDB1.API.Controllers
     [ApiController]
     public class CargosController : ControllerBase
     {
-        private readonly IServicoDeDominioDeCargos servicoDeDominioDeCargos;
+        private readonly IArmazenadorDeCargos armazenadorDeCargos;
+        private readonly IAtualizadorDeCargos atualizadorDeCargos;
+        private readonly IRemovedorDeCargos removedorDeCargos;
+        private readonly IConsultasDeCargos consultasDeCargos;
         private readonly IMapper iMapper;
 
-        public CargosController(IServicoDeDominioDeCargos servicoDeDominioDeCargos,
-                                  IMapper iMapper)
+        public CargosController(IMapper iMapper,
+                        IArmazenadorDeCargos armazenadorDeCargos,
+                        IAtualizadorDeCargos atualizadorDeCargos,
+                        IRemovedorDeCargos removedorDeCargos,
+                        IConsultasDeCargos consultasDeCargos)
         {
-            this.servicoDeDominioDeCargos = servicoDeDominioDeCargos;
+            this.armazenadorDeCargos = armazenadorDeCargos;
+            this.atualizadorDeCargos = atualizadorDeCargos;
+            this.removedorDeCargos = removedorDeCargos;
+            this.consultasDeCargos = consultasDeCargos;
             this.iMapper = iMapper;
         }
 
@@ -31,9 +41,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var dados = servicoDeDominioDeCargos.ListarTodos();
-
-            return Ok(iMapper.Map<List<CargoDto>>(dados));
+            var dados = await consultasDeCargos.ListarTodos();
+            
+            return Ok(dados);
         }
 
         /// <summary>
@@ -42,7 +52,8 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = servicoDeDominioDeCargos.RecuperarPorId(id);
+            var resultado = await consultasDeCargos.RecuperarPorId(id);
+
             return Ok(iMapper.Map<CargoDto>(resultado));
         }
 
@@ -52,7 +63,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CargoDto dto)
         {
-            servicoDeDominioDeCargos.Adicionar(iMapper.Map<Cargo>(dto));
+            await armazenadorDeCargos.Adicionar(iMapper.Map<Cargo>(dto));
 
             return Ok();
         }
@@ -64,7 +75,7 @@ namespace OnboardingSIGDB1.API.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] CargoDto dto)
         {
             dto.Id = id;
-            servicoDeDominioDeCargos.Atualizar(iMapper.Map<Cargo>(dto));
+            await atualizadorDeCargos.Atualizar(iMapper.Map<Cargo>(dto));
 
             return Ok();
         }
@@ -75,7 +86,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            servicoDeDominioDeCargos.Deletar(id);
+            await removedorDeCargos.Deletar(id);
             return Ok();
         }
     }

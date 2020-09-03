@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnboardingSIGDB1.API.Dto
+namespace OnboardingSIGDB1.Domain.Empresas.Dtos
 {
-    public class FuncionarioFiltroDto
+    public class EmpresaFiltroDto
     {
         public string Nome { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public string Cpf { get; set; }
+        public string Cnpj { get; set; }
     }
 }

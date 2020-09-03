@@ -13,17 +13,17 @@ namespace OnboardingSIGDB1.Domain.Servicos
 {
     public class ServicoDeDominioDeEmpresas : IServicoDeDominioDeEmpresas
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IRepositorioBase<Empresa> repositorioBase;
         private readonly IRepositorioDeConsultaDeEmpresas repositorioDeConsultaDeEmpresas;
         private readonly NotificationContext notificationContext;
         private readonly IServicoDeValidacaoDeEmpresas servicoDeValidacaoDeEmpresas;
 
-        public ServicoDeDominioDeEmpresas(IUnitOfWork unitOfWork,
+        public ServicoDeDominioDeEmpresas(IRepositorioBase<Empresa> repositorioBase,
             IRepositorioDeConsultaDeEmpresas repositorioDeConsultaDeEmpresas,
             NotificationContext notificationContext,
             IServicoDeValidacaoDeEmpresas servicoDeValidacaoDeEmpresas)
         {
-            this.unitOfWork = unitOfWork;
+            this.repositorioBase = repositorioBase;
             this.repositorioDeConsultaDeEmpresas = repositorioDeConsultaDeEmpresas;
             this.notificationContext = notificationContext;
             this.servicoDeValidacaoDeEmpresas = servicoDeValidacaoDeEmpresas;
@@ -37,7 +37,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             if (empresa.Valid)
             {
                 if (!notificationContext.HasNotifications)
-                    unitOfWork.Add(empresa);
+                    repositorioBase.Add(empresa);
             }
             else
                 notificationContext.AddNotifications(empresa.ValidationResult);
@@ -48,7 +48,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             empresa.Validar();
 
             if (empresa.Valid)
-                unitOfWork.Update(empresa);
+                repositorioBase.Update(empresa);
             else
                 notificationContext.AddNotifications(empresa.ValidationResult);
         }
@@ -58,7 +58,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             var empresa = repositorioDeConsultaDeEmpresas.RecuperarPorId(id);
 
             if (empresa != null)
-                unitOfWork.Delete(empresa);
+                repositorioBase.Remove(empresa);
             else
                 notificationContext.AddNotification(string.Empty, "Empresa não localizada");
         }

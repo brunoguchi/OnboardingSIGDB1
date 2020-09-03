@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
-using OnboardingSIGDB1.API.Dto;
+using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
+using OnboardingSIGDB1.Domain.Empresas.Dtos;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Dtos;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 using System;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
+using OnboardingSIGDB1.Domain.Cargos.Servicos;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Servicos;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
@@ -14,9 +15,12 @@ namespace OnboardingSIGDB1.IOC
         {
             services.AddScoped<IServicoDeDominioDeEmpresas, ServicoDeDominioDeEmpresas>();
             services.AddScoped<IServicoDeValidacaoDeEmpresas, ServicoDeValidacaoDeEmpresas>();
-            services.AddScoped<IServicoDeDominioDeCargos, ServicoDeDominioDeCargos>();
             services.AddScoped<IServicoDeDominioDeFuncionarios, ServicoDeDominioDeFuncionarios>();
             services.AddScoped<IServicoDeValidacaoDeFuncionarios, ServicoDeValidacaoDeFuncionarios>();
+
+            services.AddScoped<IArmazenadorDeCargos, ArmazenadorDeCargos>();
+            services.AddScoped<IAtualizadorDeCargos, AtualizadorDeCargos>();
+            services.AddScoped<IRemovedorDeCargos, RemovedorDeCargos>();
         }
     }
 }
