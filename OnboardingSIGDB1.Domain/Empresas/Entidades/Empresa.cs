@@ -27,6 +27,7 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
 
                 RuleFor(x => x.Cnpj)
                     .NotEmpty()
+                    .NotNull()
                     .MaximumLength(14)
                     .Length(14);
 

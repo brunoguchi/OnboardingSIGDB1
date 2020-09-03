@@ -31,6 +31,7 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
 
                 RuleFor(x => x.Cpf)
                     .NotEmpty()
+                    .NotNull()
                     .MaximumLength(11)
                     .Length(11);
 
