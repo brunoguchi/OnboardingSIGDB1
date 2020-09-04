@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 
-namespace OnboardingSIGDB1.Data.Mapeamentos
+namespace OnboardingSIGDB1.Data.Funcionarios.Mappings
 {
     public class FuncionarioCargoMapping : IEntityTypeConfiguration<FuncionarioCargo>
     {
@@ -11,9 +11,12 @@ namespace OnboardingSIGDB1.Data.Mapeamentos
             builder.HasKey(x => new { x.CargoId, x.FuncionarioId });
 
             builder.HasOne(x => x.Cargo)
-                .WithMany(x => x.FuncionariosCargos)
-                .HasForeignKey(x => x.CargoId)
+                .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //.WithMany(x => x.FuncionariosCargos)
+            //.HasForeignKey(x => x.CargoId)
+            //.OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Funcionario)
                 .WithMany(x => x.FuncionariosCargos)

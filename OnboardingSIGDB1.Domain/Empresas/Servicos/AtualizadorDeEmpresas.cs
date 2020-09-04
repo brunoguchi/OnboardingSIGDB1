@@ -1,5 +1,7 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
+using OnboardingSIGDB1.Domain.Empresas.Dtos;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Servicos;
 using System;
@@ -21,14 +23,26 @@ namespace OnboardingSIGDB1.Domain.Empresas.Servicos
             this.notificationContext = notificationContext;
         }
 
-        public async Task Atualizar(Empresa empresa)
+        public async Task Atualizar(EmpresaDto dto)
         {
-            empresa.Validar();
+            var empresaGravada = await repositorioBase.GetById(dto.Id);
 
-            if (empresa.Valid)
-                await repositorioBase.Update(empresa);
-            else
-                notificationContext.AddNotifications(empresa.ValidationResult);
+            ValidarEmpresa(empresaGravada);
+
+            if (notificationContext.HasNotifications) return;
+
+            empresaGravada.AtualizarNome(dto.Nome);
+            empresaGravada.AtualizarCnpj(dto.Cnpj);
+            empresaGravada.AtualizarDataFundacao(dto.DataFundacao);
+
+            if (!empresaGravada.Validar())
+                notificationContext.AddNotifications(empresaGravada.ValidationResult);
+        }
+
+        private void ValidarEmpresa(Empresa empresa)
+        {
+            if (empresa == null)
+                notificationContext.AddNotification(string.Empty, string.Format(Mensagens.CampoNaoLocalizado, Mensagens.CampoEmpresa));
         }
     }
 }

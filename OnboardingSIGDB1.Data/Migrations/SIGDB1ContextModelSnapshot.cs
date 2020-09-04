@@ -19,7 +19,7 @@ namespace OnboardingSIGDB1.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.Cargo", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Cargos.Entidades.Cargo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,7 @@ namespace OnboardingSIGDB1.Data.Migrations
                     b.ToTable("Cargos");
                 });
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.Empresa", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Empresas.Entidades.Empresa", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace OnboardingSIGDB1.Data.Migrations
                     b.ToTable("Empresas");
                 });
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.Funcionario", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Funcionarios.Entidades.Funcionario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace OnboardingSIGDB1.Data.Migrations
                     b.ToTable("Funcionarios");
                 });
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.FuncionarioCargo", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Funcionarios.Entidades.FuncionarioCargo", b =>
                 {
                     b.Property<int>("CargoId");
 
@@ -97,22 +97,22 @@ namespace OnboardingSIGDB1.Data.Migrations
                     b.ToTable("FuncionariosCargos");
                 });
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.Funcionario", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Funcionarios.Entidades.Funcionario", b =>
                 {
-                    b.HasOne("OnboardingSIGDB1.Domain.Entities.Empresa", "Empresa")
+                    b.HasOne("OnboardingSIGDB1.Domain.Empresas.Entidades.Empresa", "Empresa")
                         .WithMany()
                         .HasForeignKey("EmpresaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("OnboardingSIGDB1.Domain.Entities.FuncionarioCargo", b =>
+            modelBuilder.Entity("OnboardingSIGDB1.Domain.Funcionarios.Entidades.FuncionarioCargo", b =>
                 {
-                    b.HasOne("OnboardingSIGDB1.Domain.Entities.Cargo", "Cargo")
-                        .WithMany("FuncionariosCargos")
+                    b.HasOne("OnboardingSIGDB1.Domain.Cargos.Entidades.Cargo", "Cargo")
+                        .WithMany()
                         .HasForeignKey("CargoId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("OnboardingSIGDB1.Domain.Entities.Funcionario", "Funcionario")
+                    b.HasOne("OnboardingSIGDB1.Domain.Funcionarios.Entidades.Funcionario", "Funcionario")
                         .WithMany("FuncionariosCargos")
                         .HasForeignKey("FuncionarioId")
                         .OnDelete(DeleteBehavior.Restrict);

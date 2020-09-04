@@ -1,4 +1,5 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores;
@@ -25,16 +26,6 @@ namespace OnboardingSIGDB1.Domain.Servicos
         public async Task Executar(Empresa empresa)
         {
             await ValidarSeEmpresaExistentePorDocumento(empresa.Cnpj);
-            await ValidarCnpj(empresa.Cnpj);
-        }
-
-        private async Task ValidarCnpj(string cnpj)
-        {
-            string pattern = @"^(\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2})|(\d{14})$";
-            Regex regex = new Regex(pattern);
-
-            if (!regex.IsMatch(cnpj))
-                notificationContext.AddNotification(string.Empty, "CNPJ inválido");
         }
 
         private async Task ValidarSeEmpresaExistentePorDocumento(string cnpj)
@@ -42,7 +33,7 @@ namespace OnboardingSIGDB1.Domain.Servicos
             var empresa = await consultasDeEmpresas.RecuperarPorCnpj(cnpj);
 
             if (empresa != null)
-                notificationContext.AddNotification(string.Empty, "Já existe uma empresa cadastrada para este CNPJ");
+                notificationContext.AddNotification(string.Empty, string.Format(Mensagens.CampoJaCadastradoParaEsteValor, Mensagens.CampoCNPJ, cnpj));
         }
     }
 }

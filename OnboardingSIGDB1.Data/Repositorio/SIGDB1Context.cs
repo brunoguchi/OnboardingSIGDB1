@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnboardingSIGDB1.Data.Mapeamentos;
+using OnboardingSIGDB1.Data.Cargos.Mappings;
+using OnboardingSIGDB1.Data.Empresas.Mappings;
+using OnboardingSIGDB1.Data.Funcionarios.Mappings;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;

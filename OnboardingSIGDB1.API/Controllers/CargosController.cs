@@ -54,7 +54,7 @@ namespace OnboardingSIGDB1.API.Controllers
         {
             var resultado = await consultasDeCargos.RecuperarPorId(id);
 
-            return Ok(iMapper.Map<CargoDto>(resultado));
+            return Ok(resultado);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CargoDto dto)
         {
-            await armazenadorDeCargos.Adicionar(iMapper.Map<Cargo>(dto));
+            await armazenadorDeCargos.Adicionar(dto);
 
             return Ok();
         }
@@ -75,7 +75,7 @@ namespace OnboardingSIGDB1.API.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] CargoDto dto)
         {
             dto.Id = id;
-            await atualizadorDeCargos.Atualizar(iMapper.Map<Cargo>(dto));
+            await atualizadorDeCargos.Atualizar(dto);
 
             return Ok();
         }

@@ -1,13 +1,10 @@
-﻿using OnboardingSIGDB1.Domain.Cargos.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos
 {
     public interface IArmazenadorDeCargos
     {
-        Task Adicionar(Cargo cargo);
+        Task Adicionar(CargoDto cargo);
     }
 }

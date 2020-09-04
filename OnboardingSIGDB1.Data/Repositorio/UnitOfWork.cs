@@ -15,9 +15,9 @@ namespace OnboardingSIGDB1.Data.Repositorio
             _context = context;
         }
 
-        public async Task<bool> Commit()
+        public async Task Commit()
         {
-            return (await _context.SaveChangesAsync() > 0);
+            await _context.SaveChangesAsync();
         }
     }
 }

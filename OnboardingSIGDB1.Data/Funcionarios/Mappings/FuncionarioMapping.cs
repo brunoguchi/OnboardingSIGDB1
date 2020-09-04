@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
 
-namespace OnboardingSIGDB1.Data.Mapeamentos
+namespace OnboardingSIGDB1.Data.Funcionarios.Mappings
 {
     public class FuncionarioMapping : IEntityTypeConfiguration<Funcionario>
     {
@@ -25,6 +25,7 @@ namespace OnboardingSIGDB1.Data.Mapeamentos
                 .HasForeignKey(x => x.EmpresaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Ignore(x => x.FuncionariosCargos);
             builder.Ignore(x => x.Invalid);
             builder.Ignore(x => x.Valid);
             builder.Ignore(x => x.ValidationResult);

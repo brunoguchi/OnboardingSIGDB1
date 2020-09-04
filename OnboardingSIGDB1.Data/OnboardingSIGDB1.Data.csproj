@@ -11,6 +11,12 @@
     <Compile Remove="Migrations\20200825131748_v2.Designer.cs" />
     <Compile Remove="Migrations\20200825162556_v3.cs" />
     <Compile Remove="Migrations\20200825162556_v3.Designer.cs" />
+    <Compile Remove="Migrations\20200826141025_v4.cs" />
+    <Compile Remove="Migrations\20200826141025_v4.Designer.cs" />
+    <Compile Remove="Migrations\20200826172255_v5.cs" />
+    <Compile Remove="Migrations\20200826172255_v5.Designer.cs" />
+    <Compile Remove="Migrations\20200904174708_v8.cs" />
+    <Compile Remove="Migrations\20200904174708_v8.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,10 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cargos\Mappings\" />
-    <Folder Include="Empresas\Mappings\" />
-    <Folder Include="Funcionarios\Consultas\" />
-    <Folder Include="Funcionarios\Mappings\" />
+    <Folder Include="Funcionarios\Repositorio\" />
   </ItemGroup>
 
 </Project>

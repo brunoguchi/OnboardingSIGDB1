@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnboardingSIGDB1.Domain.Funcionarios.Dtos;
 using OnboardingSIGDB1.Domain.Funcionarios.Entidades;
+using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
 
 namespace OnboardingSIGDB1.API.Controllers
@@ -15,14 +16,29 @@ namespace OnboardingSIGDB1.API.Controllers
     [ApiController]
     public class FuncionariosController : ControllerBase
     {
-        private readonly IServicoDeDominioDeFuncionarios servicoDeDominioDeFuncionarios;
+        private readonly IArmazenadorDeFuncionarios armazenadorDeFuncionarios;
+        private readonly IAtualizadorDeFuncionarios atualizadorDeFuncionarios;
+        private readonly IRemovedorDeFuncionarios removedorDeFuncionarios;
+        private readonly IVinculadorDeFuncionarioCargo vinculadorDeFuncionarioCargo;
+        private readonly IVinculadorDeFuncionarioEmpresa vinculadorDeFuncionarioEmpresa;
+        private readonly IConsultaDeFuncionarios consultaDeFuncionarios;
         private readonly IMapper iMapper;
 
-        public FuncionariosController(IServicoDeDominioDeFuncionarios servicoDeDominioDeFuncionarios,
-                                  IMapper iMapper)
+        public FuncionariosController(IMapper iMapper,
+            IArmazenadorDeFuncionarios armazenadorDeFuncionarios,
+            IAtualizadorDeFuncionarios atualizadorDeFuncionarios,
+            IRemovedorDeFuncionarios removedorDeFuncionarios,
+            IVinculadorDeFuncionarioCargo vinculadorDeFuncionarioCargo,
+            IVinculadorDeFuncionarioEmpresa vinculadorDeFuncionarioEmpresa,
+            IConsultaDeFuncionarios consultaDeFuncionarios)
         {
-            this.servicoDeDominioDeFuncionarios = servicoDeDominioDeFuncionarios;
             this.iMapper = iMapper;
+            this.armazenadorDeFuncionarios = armazenadorDeFuncionarios;
+            this.atualizadorDeFuncionarios = atualizadorDeFuncionarios;
+            this.removedorDeFuncionarios = removedorDeFuncionarios;
+            this.vinculadorDeFuncionarioCargo = vinculadorDeFuncionarioCargo;
+            this.vinculadorDeFuncionarioEmpresa = vinculadorDeFuncionarioEmpresa;
+            this.consultaDeFuncionarios = consultaDeFuncionarios;
         }
 
         /// <summary>
@@ -31,9 +47,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var dados = servicoDeDominioDeFuncionarios.ListarTodos();
-
-            return Ok(iMapper.Map<List<FuncionarioDto>>(dados));
+            var consulta = await consultaDeFuncionarios.ListarTodos();
+            
+            return Ok(consulta);
         }
 
         /// <summary>
@@ -42,8 +58,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var resultado = servicoDeDominioDeFuncionarios.RecuperarPorId(id);
-            return Ok(iMapper.Map<FuncionarioDto>(resultado));
+            var consulta = await consultaDeFuncionarios.RecuperarPorIdComUltimoCargo(id);
+
+            return Ok(consulta);
         }
 
         /// <summary>
@@ -52,8 +69,9 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpGet("pesquisar")]
         public async Task<IActionResult> Get([FromQuery] FuncionarioFiltroDto filtro)
         {
-            var resultado = servicoDeDominioDeFuncionarios.PesquisarPorFiltro(iMapper.Map<FuncionarioFiltro>(filtro));
-            return Ok(iMapper.Map<List<FuncionarioDto>>(resultado));
+            var consulta = await consultaDeFuncionarios.RecuperarPorFiltro(filtro);
+
+            return Ok(consulta);
         }
 
         /// <summary>
@@ -62,7 +80,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] FuncionarioDto dto)
         {
-            servicoDeDominioDeFuncionarios.Adicionar(iMapper.Map<Funcionario>(dto));
+            await armazenadorDeFuncionarios.Adicionar(dto);
 
             return Ok();
         }
@@ -74,7 +92,7 @@ namespace OnboardingSIGDB1.API.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] FuncionarioDto dto)
         {
             dto.Id = id;
-            servicoDeDominioDeFuncionarios.Atualizar(iMapper.Map<Funcionario>(dto));
+            await atualizadorDeFuncionarios.Atualizar(dto);
 
             return Ok();
         }
@@ -85,7 +103,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            servicoDeDominioDeFuncionarios.Deletar(id);
+            await removedorDeFuncionarios.Deletar(id);
             return Ok();
         }
 
@@ -95,7 +113,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPut("vincularEmpresa")]
         public async Task<IActionResult> PutVincularEmpresa([FromBody] FuncionarioDto dto)
         {
-            servicoDeDominioDeFuncionarios.VincularFuncionarioAEmpresa(iMapper.Map<Funcionario>(dto));
+            await vinculadorDeFuncionarioEmpresa.VincularFuncionarioAEmpresa(dto);
             return Ok();
         }
 
@@ -105,7 +123,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPut("vincularCargo")]
         public async Task<IActionResult> PutVincularCargo([FromBody] FuncionarioCargoDto dto)
         {
-            servicoDeDominioDeFuncionarios.VincularFuncionarioAoCargo(iMapper.Map<FuncionarioCargo>(dto));
+            await vinculadorDeFuncionarioCargo.VincularFuncionarioAoCargo(dto);
             return Ok();
         }
     }

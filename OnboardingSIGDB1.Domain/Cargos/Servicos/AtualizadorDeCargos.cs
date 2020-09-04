@@ -1,5 +1,7 @@
 ﻿using OnboardingSIGDB1.Core.Notifications;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
+using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
 using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
 using System;
@@ -21,14 +23,24 @@ namespace OnboardingSIGDB1.Domain.Cargos.Servicos
             this.notificationContext = notificationContext;
         }
 
-        public async Task Atualizar(Cargo cargo)
+        public async Task Atualizar(CargoDto dto)
         {
-            cargo.Validar();
+            var cargoGravado = await repositorioBase.GetById(dto.Id);
 
-            if (cargo.Valid)
-                await repositorioBase.Update(cargo);
-            else
-                notificationContext.AddNotifications(cargo.ValidationResult);
+            ValidarCargo(cargoGravado);
+
+            if (notificationContext.HasNotifications) return;
+
+            cargoGravado.AtualizarDescricao(dto.Descricao);
+
+            if (!cargoGravado.Validar())
+                notificationContext.AddNotifications(cargoGravado.ValidationResult);
+        }
+
+        private void ValidarCargo(Cargo cargo)
+        {
+            if (cargo == null)
+                notificationContext.AddNotification(string.Empty, string.Format(Mensagens.CampoNaoLocalizado, Mensagens.CampoCargo));
         }
     }
 }

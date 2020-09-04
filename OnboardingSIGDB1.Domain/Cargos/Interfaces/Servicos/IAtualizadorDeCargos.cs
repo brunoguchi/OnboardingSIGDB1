@@ -1,4 +1,5 @@
-﻿using OnboardingSIGDB1.Domain.Cargos.Entidades;
+﻿using OnboardingSIGDB1.Domain.Cargos.Dtos;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,6 @@ namespace OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos
 {
     public interface IAtualizadorDeCargos
     {
-        Task Atualizar(Cargo cargo);
+        Task Atualizar(CargoDto cargo);
     }
 }

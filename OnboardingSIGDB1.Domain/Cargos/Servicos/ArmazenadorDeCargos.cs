@@ -1,5 +1,7 @@
-﻿using OnboardingSIGDB1.Core.Notifications;
+﻿using AutoMapper;
+using OnboardingSIGDB1.Core.Notifications;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
+using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
 using OnboardingSIGDB1.Domain.Cargos.Interfaces.Servicos;
 using System;
@@ -13,25 +15,27 @@ namespace OnboardingSIGDB1.Domain.Cargos.Servicos
     {
         private readonly IRepositorioBase<Cargo> repositorioBase;
         private readonly NotificationContext notificationContext;
+        private readonly IMapper iMapper;
 
         public ArmazenadorDeCargos(IRepositorioBase<Cargo> repositorioBase,
-            NotificationContext notificationContext)
+            NotificationContext notificationContext,
+            IMapper iMapper)
         {
             this.repositorioBase = repositorioBase;
             this.notificationContext = notificationContext;
+            this.iMapper = iMapper;
         }
 
-        public async Task Adicionar(Cargo cargo)
+        public async Task Adicionar(CargoDto dto)
         {
-            cargo.Validar();
+            var cargo = iMapper.Map<Cargo>(dto);
 
-            if (cargo.Valid)
-            {
-                if (!notificationContext.HasNotifications)
-                    await repositorioBase.Add(cargo);
-            }
-            else
+            if (!cargo.Validar())
                 notificationContext.AddNotifications(cargo.ValidationResult);
+
+            if (notificationContext.HasNotifications) return;
+
+            await repositorioBase.Add(cargo);
         }
     }
 }

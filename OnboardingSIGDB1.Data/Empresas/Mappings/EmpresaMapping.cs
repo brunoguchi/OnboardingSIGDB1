@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnboardingSIGDB1.Data.Mapeamentos
+namespace OnboardingSIGDB1.Data.Empresas.Mappings
 {
     public class EmpresaMapping : IEntityTypeConfiguration<Empresa>
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnboardingSIGDB1.Core.Notifications;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using OnboardingSIGDB1.Domain.Empresas.Interfaces.Repositorios;
@@ -12,29 +13,29 @@ namespace OnboardingSIGDB1.Domain.Empresas.Servicos
     {
         private readonly IRepositorioBase<Empresa> repositorioBase;
         private readonly NotificationContext notificationContext;
-        private readonly IConsultasDeEmpresas consultasDeEmpresas;
-        private readonly IMapper _iMapper;
 
         public RemovedorDeEmpresas(IRepositorioBase<Empresa> repositorioBase,
-            NotificationContext notificationContext,
-            IConsultasDeEmpresas consultasDeEmpresas,
-            IMapper _iMapper)
+            NotificationContext notificationContext)
         {
             this.repositorioBase = repositorioBase;
             this.notificationContext = notificationContext;
-            this.consultasDeEmpresas = consultasDeEmpresas;
-            this._iMapper = _iMapper;
         }
 
         public async Task Deletar(int id)
         {
-            var empresaDto = await consultasDeEmpresas.RecuperarPorId(id);
-            var empresa = _iMapper.Map<Empresa>(empresaDto);
+            var empresa = await repositorioBase.GetById(id);
 
-            if (empresa != null)
-                await repositorioBase.Remove(empresa);
-            else
-                notificationContext.AddNotification(string.Empty, "Empresa não localizada");
+            ValidarEmpresa(empresa);
+
+            if (notificationContext.HasNotifications) return;
+
+            await repositorioBase.Remove(empresa);
+        }
+
+        private void ValidarEmpresa(Empresa empresa)
+        {
+            if (empresa == null)
+                notificationContext.AddNotification(string.Empty, string.Format(Mensagens.CampoNaoLocalizado, Mensagens.CampoEmpresa));
         }
     }
 }

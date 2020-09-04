@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using OnboardingSIGDB1.Core.Extensions;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Entidades;
 using System;
 using System.Collections.Generic;
@@ -8,13 +10,17 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
 {
     public class Empresa : EntidadeValidacao
     {
-        public string Nome { get; set; }
-        public string Cnpj { get; set; }
-        public DateTime DataFundacao { get; set; }
+        public string Nome { get; private set; }
+        public string Cnpj { get; private set; }
+        public DateTime DataFundacao { get; private set; }
 
-        public void Validar()
+        public void AtualizarNome(string nome) => this.Nome = nome;
+        public void AtualizarCnpj(string cnpj) => this.Cnpj = cnpj.RemoverFormatacaoDocumento();
+        public void AtualizarDataFundacao(DateTime data) => this.DataFundacao = data;
+
+        public bool Validar()
         {
-            base.Validate(this, new EmpresaValidator());
+            return base.Validate(this, new EmpresaValidator());
         }
 
         public class EmpresaValidator : AbstractValidator<Empresa>
@@ -22,18 +28,18 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
             public EmpresaValidator()
             {
                 RuleFor(x => x.Nome)
-                    .NotEmpty().WithMessage("Nome é obrigatório ser preenchido")
-                    .MaximumLength(150).WithMessage("Tamanho do nome não deve ultrapassar 150 caracteres");
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome))
+                    .MaximumLength(150).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoNome, Mensagens.Tamanho150));
 
                 RuleFor(x => x.Cnpj)
-                    .NotEmpty()
-                    .NotNull()
-                    .MaximumLength(14)
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCNPJ))
+                    .NotNull().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCNPJ))
+                    .MaximumLength(14).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoCNPJ, Mensagens.Tamanho14))
                     .Length(14);
 
                 RuleFor(x => x.DataFundacao)
-                    .NotEmpty()
-                    .Must(x => x > DateTime.MinValue);
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDataFundacao))
+                    .Must(x => x > DateTime.MinValue).WithMessage(string.Format(Mensagens.CampoDevePossuirTamanhoSuperior, Mensagens.CampoDataFundacao, DateTime.MinValue.ToString()));
             }
         }
     }

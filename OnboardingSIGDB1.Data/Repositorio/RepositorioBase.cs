@@ -40,8 +40,6 @@ namespace OnboardingSIGDB1.Data.Repositorio
         {
             var entity = await _context.Set<T>().FindAsync(id);
 
-            _context.Entry(entity).State = EntityState.Detached;
-
             return entity;
         }
     }

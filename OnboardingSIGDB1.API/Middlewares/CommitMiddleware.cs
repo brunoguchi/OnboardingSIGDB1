@@ -30,8 +30,15 @@ namespace OnboardingSIGDB1.API.Middlewares
 
                 if (!notificationContext.HasNotifications)
                 {
-                    var uow = (IUnitOfWork)httpContext.RequestServices.GetService(typeof(IUnitOfWork));
-                    await uow.Commit();
+                    try
+                    {
+                        var uow = (IUnitOfWork)httpContext.RequestServices.GetService(typeof(IUnitOfWork));
+                        await uow.Commit();
+                    }
+                    catch (Exception ex )
+                    {
+
+                    }
                 }
             }
         }

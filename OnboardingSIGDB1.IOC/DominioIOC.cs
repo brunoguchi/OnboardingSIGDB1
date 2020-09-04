@@ -6,6 +6,7 @@ using OnboardingSIGDB1.Domain.Empresas.Interfaces.Validadores;
 using OnboardingSIGDB1.Domain.Empresas.Servicos;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Servicos;
 using OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Validadores;
+using OnboardingSIGDB1.Domain.Funcionarios.Servicos;
 using OnboardingSIGDB1.Domain.Servicos;
 
 namespace OnboardingSIGDB1.IOC
@@ -14,10 +15,6 @@ namespace OnboardingSIGDB1.IOC
     {
         public static void AddServicosDeDominio(this IServiceCollection services)
         {
-            
-            services.AddScoped<IServicoDeDominioDeFuncionarios, ServicoDeDominioDeFuncionarios>();
-            services.AddScoped<IServicoDeValidacaoDeFuncionarios, ServicoDeValidacaoDeFuncionarios>();
-
             services.AddScoped<IArmazenadorDeCargos, ArmazenadorDeCargos>();
             services.AddScoped<IAtualizadorDeCargos, AtualizadorDeCargos>();
             services.AddScoped<IRemovedorDeCargos, RemovedorDeCargos>();
@@ -26,6 +23,13 @@ namespace OnboardingSIGDB1.IOC
             services.AddScoped<IAtualizadorDeEmpresas, AtualizadorDeEmpresas>();
             services.AddScoped<IRemovedorDeEmpresas, RemovedorDeEmpresas>();
             services.AddScoped<IServicoDeValidacaoDeEmpresas, ServicoDeValidacaoDeEmpresas>();
+
+            services.AddScoped<IArmazenadorDeFuncionarios, ArmazenadorDeFuncionarios>();
+            services.AddScoped<IAtualizadorDeFuncionarios, AtualizadorDeFuncionarios>();
+            services.AddScoped<IRemovedorDeFuncionarios, RemovedorDeFuncionarios>();
+            services.AddScoped<IServicoDeValidacaoDeFuncionarios, ServicoDeValidacaoDeFuncionarios>();
+            services.AddScoped<IVinculadorDeFuncionarioCargo, VinculadorDeFuncionarioCargo>();
+            services.AddScoped<IVinculadorDeFuncionarioEmpresa, VinculadorDeFuncionarioEmpresa>();
         }
     }
 }

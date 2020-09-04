@@ -1,24 +1,37 @@
 ﻿using FluentValidation;
+using OnboardingSIGDB1.Core.Extensions;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Entidades;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
 using OnboardingSIGDB1.Domain.Empresas.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
 {
     public class Funcionario : EntidadeValidacao
     {
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
-        public DateTime DataContratacao { get; set; }
-        public int? EmpresaId { get; set; }
-        public Empresa Empresa { get; set; }
-        public List<FuncionarioCargo> FuncionariosCargos { get; set; }
+        public string Nome { get; private set; }
+        public string Cpf { get; private set; }
+        public DateTime DataContratacao { get; private set; }
+        public int? EmpresaId { get; private set; }
+        public Empresa Empresa { get; private set; }
+        public virtual List<FuncionarioCargo> FuncionariosCargos { get; private set; } = new List<FuncionarioCargo>();
 
-        public void Validar()
+        public bool Validar()
         {
-            base.Validate(this, new FuncionarioValidator());
+            return base.Validate(this, new FuncionarioValidator());
+        }
+
+        public void AtualizarNome(string nome) => this.Nome = nome;
+        public void AtualizarCpf(string cpf) => this.Cpf = cpf.RemoverFormatacaoDocumento();
+        public void AtualizarDataContratacao(DateTime data) => this.DataContratacao = data;
+        public void AtualizarEmpresaId(int? empresaId) => this.EmpresaId = empresaId;
+        public void AdicionarCargo(Cargo cargo)
+        {
+            this.FuncionariosCargos.Add(new FuncionarioCargo(this, cargo));
         }
 
         public class FuncionarioValidator : AbstractValidator<Funcionario>
@@ -26,18 +39,18 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
             public FuncionarioValidator()
             {
                 RuleFor(x => x.Nome)
-                    .NotEmpty().WithMessage("Nome é obrigatório ser preenchido")
-                    .MaximumLength(150).WithMessage("Tamanho do nome não deve ultrapassar 150 caracteres");
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome))
+                    .MaximumLength(150).WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome, Mensagens.Tamanho150));
 
                 RuleFor(x => x.Cpf)
-                    .NotEmpty()
-                    .NotNull()
-                    .MaximumLength(11)
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCPF))
+                    .NotNull().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCPF))
+                    .MaximumLength(11).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoCPF, Mensagens.Tamanho11))
                     .Length(11);
 
                 RuleFor(x => x.DataContratacao)
-                    .NotEmpty()
-                    .Must(x => x > DateTime.MinValue);
+                    .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDataContratacao))
+                    .Must(x => x > DateTime.MinValue).WithMessage(string.Format(Mensagens.CampoDevePossuirTamanhoSuperior, Mensagens.CampoDataContratacao, DateTime.MinValue.ToString()));
             }
         }
     }

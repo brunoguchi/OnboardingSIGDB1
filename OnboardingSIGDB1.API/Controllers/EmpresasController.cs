@@ -71,7 +71,7 @@ namespace OnboardingSIGDB1.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EmpresaDto dto)
         {
-            await armazenadorDeEmpresas.Adicionar(iMapper.Map<Empresa>(dto));
+            await armazenadorDeEmpresas.Adicionar(dto);
 
             return Ok();
         }
@@ -83,7 +83,7 @@ namespace OnboardingSIGDB1.API.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] EmpresaDto dto)
         {
             dto.Id = id;
-            await atualizadorDeEmpresas.Atualizar(iMapper.Map<Empresa>(dto));
+            await atualizadorDeEmpresas.Atualizar(dto);
 
             return Ok();
         }

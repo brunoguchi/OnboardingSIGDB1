@@ -7,6 +7,6 @@ namespace OnboardingSIGDB1.Domain.Base.Interfaces
 {
     public interface IUnitOfWork
     {
-        Task<bool> Commit();
+        Task Commit();
     }
 }
