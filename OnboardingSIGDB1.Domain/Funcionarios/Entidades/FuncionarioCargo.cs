@@ -18,10 +18,11 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
 
         protected FuncionarioCargo() { }
 
-        public FuncionarioCargo(Funcionario funcionario, Cargo cargo)
+        public FuncionarioCargo(Funcionario funcionario, Cargo cargo, DateTime DataDeVinculo)
         {
             this.Funcionario = funcionario;
             this.Cargo = cargo;
+            this.DataDeVinculo = DataDeVinculo;
         }
     }
 }

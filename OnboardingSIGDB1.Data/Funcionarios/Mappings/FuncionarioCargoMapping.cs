@@ -14,10 +14,6 @@ namespace OnboardingSIGDB1.Data.Funcionarios.Mappings
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //.WithMany(x => x.FuncionariosCargos)
-            //.HasForeignKey(x => x.CargoId)
-            //.OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(x => x.Funcionario)
                 .WithMany(x => x.FuncionariosCargos)
                 .HasForeignKey(x => x.FuncionarioId)

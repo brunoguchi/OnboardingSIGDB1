@@ -29,9 +29,9 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
         public void AtualizarCpf(string cpf) => this.Cpf = cpf.RemoverFormatacaoDocumento();
         public void AtualizarDataContratacao(DateTime data) => this.DataContratacao = data;
         public void AtualizarEmpresaId(int? empresaId) => this.EmpresaId = empresaId;
-        public void AdicionarCargo(Cargo cargo)
+        public void AdicionarCargo(Cargo cargo, DateTime dataVinculo)
         {
-            this.FuncionariosCargos.Add(new FuncionarioCargo(this, cargo));
+            this.FuncionariosCargos.Add(new FuncionarioCargo(this, cargo, dataVinculo));
         }
 
         public class FuncionarioValidator : AbstractValidator<Funcionario>

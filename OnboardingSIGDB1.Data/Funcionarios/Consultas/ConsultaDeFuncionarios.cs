@@ -26,7 +26,18 @@ namespace OnboardingSIGDB1.Data.Repositorio
 
         public async Task<IEnumerable<FuncionarioDto>> ListarTodos()
         {
-            var consulta = await GetAll();
+            var consulta = _context
+                                .Funcionarios
+                                .Include(x => x.FuncionariosCargos)
+                                .Select(x => new FuncionarioDto
+                                {
+                                    Id = x.Id,
+                                    Nome = x.Nome,
+                                    Cpf = x.Cpf,
+                                    DataContratacao = x.DataContratacao,
+                                    EmpresaId = x.EmpresaId,
+                                    FuncionariosCargos = _iMapper.Map<List<FuncionarioCargoDto>>(x.FuncionariosCargos.OrderByDescending(w => w.DataDeVinculo).Take(1))
+                                }).ToList();
 
             return _iMapper.Map<List<FuncionarioDto>>(consulta);
         }
@@ -45,33 +56,33 @@ namespace OnboardingSIGDB1.Data.Repositorio
                                && (string.IsNullOrEmpty(filtro.Cpf.RemoverFormatacaoDocumento()) || x.Cpf.Equals(filtro.Cpf.RemoverFormatacaoDocumento()))
                                && ((filtro.DataInicio == DateTime.MinValue || filtro.DataFim == DateTime.MinValue) ||
                                   (x.DataContratacao.Date >= filtro.DataInicio && x.DataContratacao.Date <= filtro.DataFim))
-                            select x).ToList();
+                            select new FuncionarioDto
+                            {
+                                Id = x.Id,
+                                Nome = x.Nome,
+                                Cpf = x.Cpf,
+                                DataContratacao = x.DataContratacao,
+                                EmpresaId = x.EmpresaId,
+                                FuncionariosCargos = _iMapper.Map<List<FuncionarioCargoDto>>(x.FuncionariosCargos.OrderByDescending(w => w.DataDeVinculo).Take(1))
+                            }).ToList();
 
             return _iMapper.Map<List<FuncionarioDto>>(consulta);
         }
 
-        public async Task<FuncionarioDto> RecuperarPorIdComTodosOsCargos(int id)
-        {
-            var consulta = _context.Funcionarios.Where(x => x.Id == id).AsNoTracking().Include(x => x.FuncionariosCargos).FirstOrDefault();
-
-            return _iMapper.Map<FuncionarioDto>(consulta);
-        }
-
         public async Task<FuncionarioDto> RecuperarPorIdComUltimoCargo(int id)
         {
-            var consulta = _context.Funcionarios.Where(x => x.Id == id)
-                            .AsNoTracking()
-                            .Include(x => x.FuncionariosCargos)
-                            .Select(x => new FuncionarioDto
-                            {
-                                Id = x.Id,
-                                Cpf = x.Cpf,
-                                DataContratacao = x.DataContratacao,
-                                EmpresaId = x.EmpresaId,
-                                Nome = x.Nome,
-                                //FuncionariosCargos = _iMapper.Map<List<FuncionarioCargoDto>>(x.FuncionariosCargos.OrderByDescending(w => w.DataDeVinculo).FirstOrDefault())
-                            })
-                            .FirstOrDefault();
+            var consulta = _context
+                                .Funcionarios
+                                .Include(x => x.FuncionariosCargos)
+                                .Select(x => new FuncionarioDto
+                                {
+                                    Id = x.Id,
+                                    Nome = x.Nome,
+                                    Cpf = x.Cpf,
+                                    DataContratacao = x.DataContratacao,
+                                    EmpresaId = x.EmpresaId,
+                                    FuncionariosCargos = _iMapper.Map<List<FuncionarioCargoDto>>(x.FuncionariosCargos.OrderByDescending(w => w.DataDeVinculo).Take(1))
+                                }).FirstOrDefault();
 
             return _iMapper.Map<FuncionarioDto>(consulta);
         }

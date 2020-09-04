@@ -18,23 +18,17 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
 {
     public class VinculadorDeFuncionarioCargo : IVinculadorDeFuncionarioCargo
     {
-        private readonly IRepositorioBase<Funcionario> repositorioFuncionarioBase;
+        private readonly IRepositorioDeFuncionarios repositorioDeFuncionarios;
         private readonly IRepositorioBase<Cargo> repositorioCargoBase;
-        private readonly IConsultaDeFuncionarios consultaDeFuncionarios;
-        private readonly IConsultasDeCargos consultasDeCargos;
         private readonly NotificationContext notificationContext;
         private readonly IMapper iMapper;
 
-        public VinculadorDeFuncionarioCargo(IRepositorioBase<Funcionario> repositorioFuncionarioBase,
+        public VinculadorDeFuncionarioCargo(IRepositorioDeFuncionarios repositorioDeFuncionarios,
             IRepositorioBase<Cargo> repositorioCargoBase,
-            IConsultaDeFuncionarios consultaDeFuncionarios,
-            IConsultasDeCargos consultasDeCargos,
             NotificationContext notificationContext,
             IMapper iMapper)
         {
-            this.repositorioFuncionarioBase = repositorioFuncionarioBase;
-            this.consultaDeFuncionarios = consultaDeFuncionarios;
-            this.consultasDeCargos = consultasDeCargos;
+            this.repositorioDeFuncionarios = repositorioDeFuncionarios;
             this.notificationContext = notificationContext;
             this.iMapper = iMapper;
             this.repositorioCargoBase = repositorioCargoBase;
@@ -42,8 +36,8 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
 
         public async Task VincularFuncionarioAoCargo(FuncionarioCargoDto funcionarioCargo)
         {
-            var funcionarioGravado = await ValidarSeFuncionarioExiste(funcionarioCargo.FuncionarioId);
-            var cargoGravado = await ValidarSeCargoExiste(funcionarioCargo.CargoId);
+            var funcionarioGravado = await repositorioDeFuncionarios.RecuperarPorIdComCargos(funcionarioCargo.FuncionarioId);
+            var cargoGravado = await repositorioCargoBase.GetById(funcionarioCargo.CargoId);
 
             if (funcionarioGravado == null || cargoGravado == null)
                 notificationContext.AddNotification(string.Empty, Mensagens.DadosInválidosParaVinculoDeFuncionarioAoCargo);
@@ -54,13 +48,7 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
             if (!ValidarCargoJaAtribuido(funcionarioGravado, funcionarioCargo.CargoId))
                 notificationContext.AddNotification(string.Empty, Mensagens.FuncionarioJaVinculadoAoACargo);
 
-            funcionarioGravado.AdicionarCargo(cargoGravado);
-        }
-
-        private async Task<Funcionario> ValidarSeFuncionarioExiste(int id)
-        {
-            var funcionarioGravado = await repositorioFuncionarioBase.GetById(id);
-            return funcionarioGravado;
+            funcionarioGravado.AdicionarCargo(cargoGravado, funcionarioCargo.DataDeVinculo);
         }
 
         private bool ValidarSeFuncionarioTemVinculoComEmpesa(Funcionario funcionario)
@@ -68,12 +56,6 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
             if (funcionario.EmpresaId == null || funcionario.EmpresaId == 0)
                 return false;
             else return true;
-        }
-
-        private async Task<Cargo> ValidarSeCargoExiste(int id)
-        {
-            var cargoGravado = await repositorioCargoBase.GetById(id);
-            return cargoGravado;
         }
 
         private bool ValidarCargoJaAtribuido(Funcionario funcionario, int cargoId)

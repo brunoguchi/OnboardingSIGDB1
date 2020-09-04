@@ -12,7 +12,6 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Interfaces.Repositorios
         Task<IEnumerable<FuncionarioDto>> ListarTodos();
         Task<IEnumerable<FuncionarioDto>> RecuperarPorFiltro(FuncionarioFiltroDto filtro);
         Task<FuncionarioDto> RecuperarPorCpf(string cpf);
-        Task<FuncionarioDto> RecuperarPorIdComTodosOsCargos(int id);
         Task<FuncionarioDto> RecuperarPorIdComUltimoCargo(int id);
     }
 }

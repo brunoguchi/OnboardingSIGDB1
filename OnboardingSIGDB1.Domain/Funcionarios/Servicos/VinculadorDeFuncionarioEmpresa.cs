@@ -35,7 +35,7 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
         {
             var funcionarioGravado = await repositorioBase.GetById(funcionario.Id);
 
-            if (ValidarSeFuncionarioTemVinculoComEmpesa(funcionarioGravado))
+            if (!ValidarSeFuncionarioTemVinculoComEmpesa(funcionarioGravado))
                 funcionarioGravado.AtualizarEmpresaId(funcionario.EmpresaId);
             else
                 notificationContext.AddNotification(string.Empty, Mensagens.FuncionarioJaVinculadoAEmpresa);
