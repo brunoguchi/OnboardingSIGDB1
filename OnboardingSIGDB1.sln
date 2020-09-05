@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnboardingSIGDB1.IOC", "Onb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnboardingSIGDB1.Core", "OnboardingSIGDB1.Core\OnboardingSIGDB1.Core.csproj", "{D9DFA08D-CAEC-4779-8263-4272670D63C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnboardingSIGDB1.Tests", "OnboardingSIGDB1.Tests\OnboardingSIGDB1.Tests.csproj", "{4455521E-DDE7-4701-948D-F9EC92F4AEE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D9DFA08D-CAEC-4779-8263-4272670D63C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9DFA08D-CAEC-4779-8263-4272670D63C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9DFA08D-CAEC-4779-8263-4272670D63C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4455521E-DDE7-4701-948D-F9EC92F4AEE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4455521E-DDE7-4701-948D-F9EC92F4AEE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4455521E-DDE7-4701-948D-F9EC92F4AEE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4455521E-DDE7-4701-948D-F9EC92F4AEE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

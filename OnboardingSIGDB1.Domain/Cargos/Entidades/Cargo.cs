@@ -22,6 +22,13 @@ namespace OnboardingSIGDB1.Domain.Cargos.Entidades
             return base.Validate(this, new CargoValidator());
         }
 
+        public Cargo() { }
+
+        public Cargo(string descricao)
+        {
+            this.Descricao = descricao;
+        }
+
         public class CargoValidator : AbstractValidator<Cargo>
         {
             public CargoValidator()
