@@ -12,7 +12,7 @@ namespace OnboardingSIGDB1.Domain.Cargos.Entidades
 {
     public class Cargo : EntidadeValidacao
     {
-        public string Descricao { get; set; }
+        public string Descricao { get; private set; }
         public virtual List<FuncionarioCargo> FuncionariosCargos { get; set; }
 
         public void AtualizarDescricao(string descricao) => this.Descricao = descricao;

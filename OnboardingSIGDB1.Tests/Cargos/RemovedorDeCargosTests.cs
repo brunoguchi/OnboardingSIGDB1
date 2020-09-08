@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Bogus;
+﻿using Bogus;
 using Moq;
 using OnboardingSIGDB1.Core.Notifications;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
@@ -9,23 +8,22 @@ using OnboardingSIGDB1.Domain.Cargos.Servicos;
 using OnboardingSIGDB1.Tests.Builders;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace OnboardingSIGDB1.Tests.Cargos
 {
-    public class AtualizadorDeCargosTests
+    public class RemovedorDeCargosTests
     {
         private readonly Faker _faker;
         private readonly CargoDto _cargoDto;
-        private readonly AtualizadorDeCargos _atualizadorDeCargos;
+        private readonly RemovedorDeCargos _removedorDeCargos;
 
         private readonly Mock<IRepositorioBase<Cargo>> repositorioBase;
         private readonly Mock<NotificationContext> notificationContext;
 
-        public AtualizadorDeCargosTests()
+        public RemovedorDeCargosTests()
         {
             _faker = new Faker();
             _cargoDto = new CargoDto
@@ -35,27 +33,29 @@ namespace OnboardingSIGDB1.Tests.Cargos
 
             repositorioBase = new Mock<IRepositorioBase<Cargo>>();
             notificationContext = new Mock<NotificationContext>();
-            _atualizadorDeCargos = new AtualizadorDeCargos(repositorioBase.Object, notificationContext.Object);
+            _removedorDeCargos = new RemovedorDeCargos(repositorioBase.Object, notificationContext.Object);
         }
 
         [Fact]
-        public async Task DeveEditarCargo()
+        public async Task DeveDeletarCargo()
         {
-            var cargo = CargoBuilder.Novo().ComId(1).Build();
-            repositorioBase.Setup(x => x.GetById(_cargoDto.Id)).ReturnsAsync(cargo);
+            var cargoId = 1;
+            var cargo = CargoBuilder.Novo().ComId(cargoId).Build();
+            repositorioBase.Setup(x => x.GetById(cargoId)).ReturnsAsync(cargo);
 
-            await _atualizadorDeCargos.Atualizar(_cargoDto);
+            await _removedorDeCargos.Deletar(cargoId);
 
-            Assert.Equal(_cargoDto.Descricao, cargo.Descricao);
+            repositorioBase.Verify(x => x.Remove(It.IsAny<Cargo>()), Times.Once);
         }
 
         [Fact]
-        public async Task DeveNotificarQuandoNaoExistirCargoParaEdicao()
+        public async Task DeveNotificarQuandoNaoExistirCargoParaDelecao()
         {
+            var cargoId = 1;
             Cargo cargoNaoLocalizado = null;
             repositorioBase.Setup(x => x.GetById(It.IsAny<int>())).ReturnsAsync(cargoNaoLocalizado);
 
-            await _atualizadorDeCargos.Atualizar(_cargoDto);
+            await _removedorDeCargos.Deletar(cargoId);
 
             Assert.True(notificationContext.Object.HasNotifications);
         }

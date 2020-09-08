@@ -38,7 +38,7 @@ namespace OnboardingSIGDB1.Tests.Cargos
             iMapper = new Mock<IMapper>();
 
             iMapper.Setup(x => x.Map<Cargo>(It.IsAny<CargoDto>()))
-                .Returns((CargoDto source) => new Cargo() { Descricao = source.Descricao });
+                .Returns((CargoDto source) => new Cargo(source.Descricao));
 
             _armazenadorDeCargos = new ArmazenadorDeCargos(repositorioBase.Object, notificationContext.Object, iMapper.Object);
         }

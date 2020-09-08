@@ -23,6 +23,15 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
             return base.Validate(this, new EmpresaValidator());
         }
 
+        public Empresa() { }
+
+        public Empresa(string nome, string cnpj, DateTime dataFundacao)
+        {
+            this.Nome = nome;
+            this.Cnpj = cnpj;
+            this.DataFundacao = dataFundacao;
+        }
+
         public class EmpresaValidator : AbstractValidator<Empresa>
         {
             public EmpresaValidator()
@@ -39,6 +48,7 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
 
                 RuleFor(x => x.DataFundacao)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDataFundacao))
+                    .NotNull()
                     .Must(x => x > DateTime.MinValue).WithMessage(string.Format(Mensagens.CampoDevePossuirTamanhoSuperior, Mensagens.CampoDataFundacao, DateTime.MinValue.ToString()));
             }
         }
