@@ -8,6 +8,10 @@ using OnboardingSIGDB1.Domain.Cargos.Servicos;
 using Moq;
 using Xunit;
 using System.Threading.Tasks;
+using OnboardingSIGDB1.Tests.Builders;
+using System.Reflection;
+using System.Linq;
+using OnboardingSIGDB1.Core.Resources;
 
 namespace OnboardingSIGDB1.Tests.Cargos
 {
@@ -40,11 +44,43 @@ namespace OnboardingSIGDB1.Tests.Cargos
         }
 
         [Fact]
+        public void DeveCriarCargo()
+        {
+            var cargoDto = new CargoDto { Descricao = _faker.Name.JobDescriptor() };
+            var cargo = CargoBuilder.Novo().Build();
+
+            cargo.AtualizarDescricao(cargoDto.Descricao);
+
+            Assert.Equal(cargoDto.Descricao, cargo.Descricao);
+        }
+
+        [Fact]
         public async Task DeveAdicionarCargo()
         {
             await _armazenadorDeCargos.Adicionar(_cargoDto);
 
-            repositorioBase.Verify(x => x.Add(It.Is<Cargo>(a => a.Valid)));
+            repositorioBase.Verify(x => x.Add(It.IsAny<Cargo>()), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task NaoDeveAdicionarCargoComDescricaoInvalida(string descricao)
+        {
+            //Arrange
+            var cargo = CargoBuilder.Novo().Build();
+            _cargoDto.Descricao = descricao;
+            bool resultadoEsperado = true;
+
+            //Act
+            await _armazenadorDeCargos.Adicionar(_cargoDto);
+
+            //Assert
+            repositorioBase.Verify(x => x.Add(It.IsAny<Cargo>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDescricao))), resultadoEsperado);
         }
     }
 }

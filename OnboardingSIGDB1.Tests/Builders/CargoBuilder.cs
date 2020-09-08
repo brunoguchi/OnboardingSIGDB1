@@ -8,8 +8,8 @@ namespace OnboardingSIGDB1.Tests.Builders
 {
     public class CargoBuilder
     {
-        protected int Id;
-        protected string Descricao;
+        public int Id { get; set; }
+        public string Descricao { get; set; }
 
         public static CargoBuilder Novo()
         {
@@ -33,8 +33,7 @@ namespace OnboardingSIGDB1.Tests.Builders
 
             if (Id <= 0) return cargo;
 
-            var propertyInfo = cargo.GetType().GetProperty("Id");
-            propertyInfo.SetValue(cargo, Convert.ChangeType(Id, propertyInfo.PropertyType), null);
+            cargo.AtualizarId(this.Id);
 
             return cargo;
         }

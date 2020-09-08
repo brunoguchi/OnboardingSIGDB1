@@ -35,6 +35,7 @@ namespace OnboardingSIGDB1.Domain.Cargos.Entidades
             {
                 RuleFor(x => x.Descricao)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDescricao))
+                    .NotNull().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDescricao))
                     .MaximumLength(250).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoDescricao, Mensagens.Tamanho250));
             }
         }
