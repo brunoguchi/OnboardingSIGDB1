@@ -8,9 +8,9 @@ namespace OnboardingSIGDB1.Core.Resources
     {
         public const string CampoDescricao = "Descrição";
         public const string CampoNome = "Nome";
-        public const string CampoCNPJ = "Cnpj";
+        public const string CampoCNPJ = "CNPJ";
         public const string CampoDataFundacao = "Data Fundação";
-        public const string CampoCPF = "Data Fundação";
+        public const string CampoCPF = "CPF";
         public const string CampoDataContratacao = "Data Contratação";
         public const string CampoCargo = "Cargo";
         public const string CampoEmpresa = "Empresa";

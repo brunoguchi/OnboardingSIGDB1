@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
 {
@@ -25,6 +26,15 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
             return base.Validate(this, new FuncionarioValidator());
         }
 
+        public Funcionario() { }
+        public Funcionario(string nome, string cpf, DateTime dataContratacao, int? empresaId = null)
+        {
+            this.Nome = nome;
+            this.Cpf = cpf;
+            this.DataContratacao = dataContratacao;
+            this.EmpresaId = empresaId;
+        }
+
         public void AtualizarNome(string nome) => this.Nome = nome;
         public void AtualizarCpf(string cpf) => this.Cpf = cpf.RemoverFormatacaoDocumento();
         public void AtualizarDataContratacao(DateTime data) => this.DataContratacao = data;
@@ -40,7 +50,7 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
             {
                 RuleFor(x => x.Nome)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome))
-                    .MaximumLength(150).WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome, Mensagens.Tamanho150));
+                    .MaximumLength(150).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoNome, Mensagens.Tamanho150));
 
                 RuleFor(x => x.Cpf)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCPF))
