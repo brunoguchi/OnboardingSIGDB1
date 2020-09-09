@@ -16,29 +16,30 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
     public class VinculadorDeFuncionarioEmpresa : IVinculadorDeFuncionarioEmpresa
     {
         private readonly IRepositorioBase<Funcionario> repositorioBase;
-        private readonly IConsultaDeFuncionarios consultaDeFuncionarios;
         private readonly NotificationContext notificationContext;
-        private readonly IMapper iMapper;
 
         public VinculadorDeFuncionarioEmpresa(IRepositorioBase<Funcionario> repositorioBase,
-            IConsultaDeFuncionarios consultaDeFuncionarios,
-            NotificationContext notificationContext,
-            IMapper iMapper)
+            NotificationContext notificationContext)
         {
             this.repositorioBase = repositorioBase;
-            this.consultaDeFuncionarios = consultaDeFuncionarios;
             this.notificationContext = notificationContext;
-            this.iMapper = iMapper;
         }
 
         public async Task VincularFuncionarioAEmpresa(FuncionarioDto funcionario)
         {
             var funcionarioGravado = await repositorioBase.GetById(funcionario.Id);
 
-            if (!ValidarSeFuncionarioTemVinculoComEmpesa(funcionarioGravado))
-                funcionarioGravado.AtualizarEmpresaId(funcionario.EmpresaId);
-            else
+            if (funcionarioGravado == null)
+                notificationContext.AddNotification(string.Empty, string.Format(Mensagens.CampoNaoLocalizado, Mensagens.CampoFuncionario));
+
+            if (notificationContext.HasNotifications) return;
+
+            if (ValidarSeFuncionarioTemVinculoComEmpesa(funcionarioGravado))
                 notificationContext.AddNotification(string.Empty, Mensagens.FuncionarioJaVinculadoAEmpresa);
+
+            if (notificationContext.HasNotifications) return;
+
+            funcionarioGravado.AtualizarEmpresaId(funcionario.EmpresaId);
         }
 
         private bool ValidarSeFuncionarioTemVinculoComEmpesa(Funcionario funcionario)

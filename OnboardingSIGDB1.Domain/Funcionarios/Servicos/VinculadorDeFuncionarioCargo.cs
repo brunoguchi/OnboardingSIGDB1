@@ -21,16 +21,13 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
         private readonly IRepositorioDeFuncionarios repositorioDeFuncionarios;
         private readonly IRepositorioBase<Cargo> repositorioCargoBase;
         private readonly NotificationContext notificationContext;
-        private readonly IMapper iMapper;
 
         public VinculadorDeFuncionarioCargo(IRepositorioDeFuncionarios repositorioDeFuncionarios,
             IRepositorioBase<Cargo> repositorioCargoBase,
-            NotificationContext notificationContext,
-            IMapper iMapper)
+            NotificationContext notificationContext)
         {
             this.repositorioDeFuncionarios = repositorioDeFuncionarios;
             this.notificationContext = notificationContext;
-            this.iMapper = iMapper;
             this.repositorioCargoBase = repositorioCargoBase;
         }
 
@@ -42,11 +39,17 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Servicos
             if (funcionarioGravado == null || cargoGravado == null)
                 notificationContext.AddNotification(string.Empty, Mensagens.DadosInválidosParaVinculoDeFuncionarioAoCargo);
 
+            if (notificationContext.HasNotifications) return;
+
             if (!ValidarSeFuncionarioTemVinculoComEmpesa(funcionarioGravado))
                 notificationContext.AddNotification(string.Empty, Mensagens.VincularFuncionarioAUmaEmpresa);
 
+            if (notificationContext.HasNotifications) return;
+
             if (!ValidarCargoJaAtribuido(funcionarioGravado, funcionarioCargo.CargoId))
                 notificationContext.AddNotification(string.Empty, Mensagens.FuncionarioJaVinculadoAoACargo);
+
+            if (notificationContext.HasNotifications) return;
 
             funcionarioGravado.AdicionarCargo(cargoGravado, funcionarioCargo.DataDeVinculo);
         }

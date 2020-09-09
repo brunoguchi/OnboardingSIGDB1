@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using OnboardingSIGDB1.Core.Extensions;
+using OnboardingSIGDB1.Domain.Cargos.Entidades;
 
 namespace OnboardingSIGDB1.Tests.Builders
 {
@@ -15,6 +16,8 @@ namespace OnboardingSIGDB1.Tests.Builders
         public string Cpf { get; private set; }
         public int? EmpresaId { get; set; }
         public DateTime DataContratacao { get; private set; }
+        public Cargo Cargo { get; set; }
+        public DateTime DataDeVinculo { get; set; }
 
         public static FuncionarioBuilder Novo()
         {
@@ -40,15 +43,31 @@ namespace OnboardingSIGDB1.Tests.Builders
             return this;
         }
 
+        public FuncionarioBuilder ComEmpresa(int? id)
+        {
+            EmpresaId = id;
+            return this;
+        }
+
+        public FuncionarioBuilder ComCargo(Cargo cargo, DateTime dataVinculo)
+        {
+            this.Cargo = cargo;
+            this.DataDeVinculo = dataVinculo;
+            return this;
+        }
+
         public Funcionario Build()
         {
-            var empresa = new Funcionario(Nome, Cpf, DataContratacao, EmpresaId);
+            var funcionario = new Funcionario(Nome, Cpf, DataContratacao, EmpresaId);
 
-            if (Id <= 0) return empresa;
+            if (Cargo != null)
+                funcionario.AdicionarCargo(this.Cargo, this.DataDeVinculo);
 
-            empresa.AtualizarId(this.Id);
+            if (Id <= 0) return funcionario;
 
-            return empresa;
+            funcionario.AtualizarId(this.Id);
+
+            return funcionario;
         }
     }
 }

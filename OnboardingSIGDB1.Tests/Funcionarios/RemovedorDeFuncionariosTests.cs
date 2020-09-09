@@ -40,7 +40,7 @@ namespace OnboardingSIGDB1.Tests.Funcionarios
         }
 
         [Fact]
-        public async Task DeveDeletarEmpresa()
+        public async Task DeveDeletarFuncionario()
         {
             var funcionarioId = 1;
             var empresa = FuncionarioBuilder.Novo().ComId(funcionarioId).Build();
@@ -52,7 +52,7 @@ namespace OnboardingSIGDB1.Tests.Funcionarios
         }
 
         [Fact]
-        public async Task DeveNotificarQuandoNaoExistirEmpresaParaDelecao()
+        public async Task DeveNotificarQuandoNaoExistirFuncionarioParaDelecao()
         {
             var funcionarioId = 10;
             Funcionario empresaNaoLocalizada = null;

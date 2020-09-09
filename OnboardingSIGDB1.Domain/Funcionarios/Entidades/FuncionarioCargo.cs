@@ -23,6 +23,9 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
             this.Funcionario = funcionario;
             this.Cargo = cargo;
             this.DataDeVinculo = DataDeVinculo;
+
+            this.FuncionarioId = funcionario.Id;
+            this.CargoId = cargo.Id;
         }
     }
 }
