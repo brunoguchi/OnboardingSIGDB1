@@ -44,7 +44,7 @@ namespace OnboardingSIGDB1.Domain.Empresas.Entidades
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCNPJ))
                     .NotNull().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCNPJ))
                     .MaximumLength(14).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoCNPJ, Mensagens.Tamanho14))
-                    .Length(14);
+                    .Length(14).WithMessage(string.Format(Mensagens.CampoComTamanhoFixo, Mensagens.CampoCNPJ, Mensagens.Tamanho14));
 
                 RuleFor(x => x.DataFundacao)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDataFundacao))

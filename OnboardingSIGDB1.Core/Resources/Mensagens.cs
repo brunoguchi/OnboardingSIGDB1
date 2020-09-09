@@ -23,6 +23,7 @@ namespace OnboardingSIGDB1.Core.Resources
 
         public const string CampoObrigatorio = "O campo '{0}' é obrigatório e deve ser preenchido";
         public const string CampoComTamanhoMaximo = "Tamanho do campo '{0}' não deve ultrapassar {1} caracteres";
+        public const string CampoComTamanhoFixo = "Tamanho do campo '{0}' deve conter exatos {1} caracteres";
         public const string CampoDevePossuirTamanhoSuperior = "O campo '{0}' deve possuir valor superior a {1}";
         public const string CampoInvalido = "O campo '{0}' é inválido";
         public const string CampoNaoLocalizado = "O campo '{0}' não foi localizado";

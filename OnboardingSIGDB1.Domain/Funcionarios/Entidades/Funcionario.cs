@@ -56,7 +56,7 @@ namespace OnboardingSIGDB1.Domain.Funcionarios.Entidades
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCPF))
                     .NotNull().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoCPF))
                     .MaximumLength(11).WithMessage(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoCPF, Mensagens.Tamanho11))
-                    .Length(11);
+                    .Length(11).WithMessage(string.Format(Mensagens.CampoComTamanhoFixo, Mensagens.CampoCPF, Mensagens.Tamanho11));
 
                 RuleFor(x => x.DataContratacao)
                     .NotEmpty().WithMessage(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDataContratacao))

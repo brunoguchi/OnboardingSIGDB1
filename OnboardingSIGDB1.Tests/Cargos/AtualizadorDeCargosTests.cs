@@ -2,6 +2,7 @@
 using Bogus;
 using Moq;
 using OnboardingSIGDB1.Core.Notifications;
+using OnboardingSIGDB1.Core.Resources;
 using OnboardingSIGDB1.Domain.Base.Interfaces;
 using OnboardingSIGDB1.Domain.Cargos.Dtos;
 using OnboardingSIGDB1.Domain.Cargos.Entidades;
@@ -9,6 +10,7 @@ using OnboardingSIGDB1.Domain.Cargos.Servicos;
 using OnboardingSIGDB1.Tests.Builders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,7 @@ namespace OnboardingSIGDB1.Tests.Cargos
             _faker = new Faker();
             _cargoDto = new CargoDto
             {
+                Id = _faker.Random.Int(min: 1, max: 100),
                 Descricao = _faker.Name.JobDescriptor()
             };
 
@@ -41,7 +44,7 @@ namespace OnboardingSIGDB1.Tests.Cargos
         [Fact]
         public async Task DeveEditarCargo()
         {
-            var cargo = CargoBuilder.Novo().ComId(1).Build();
+            var cargo = CargoBuilder.Novo().ComId(_cargoDto.Id).Build();
             repositorioBase.Setup(x => x.GetById(_cargoDto.Id)).ReturnsAsync(cargo);
 
             await _atualizadorDeCargos.Atualizar(_cargoDto);
@@ -58,6 +61,28 @@ namespace OnboardingSIGDB1.Tests.Cargos
             await _atualizadorDeCargos.Atualizar(_cargoDto);
 
             Assert.True(notificationContext.Object.HasNotifications);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task NaoDeveEditarCargoComDescricaoInvalida(string descricao)
+        {
+            //Arrange
+            var cargo = CargoBuilder.Novo().ComId(_cargoDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(_cargoDto.Id)).ReturnsAsync(cargo);
+            _cargoDto.Descricao = descricao;
+            bool resultadoEsperado = true;
+
+            //Act
+            await _atualizadorDeCargos.Atualizar(_cargoDto);
+
+            //Assert
+            repositorioBase.Verify(x => x.Add(It.IsAny<Cargo>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoDescricao))), resultadoEsperado);
         }
     }
 }

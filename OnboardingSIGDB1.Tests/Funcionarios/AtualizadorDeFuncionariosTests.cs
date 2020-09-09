@@ -13,6 +13,8 @@ using System.Text;
 using Xunit;
 using OnboardingSIGDB1.Core.Extensions;
 using System.Threading.Tasks;
+using System.Linq;
+using OnboardingSIGDB1.Core.Resources;
 
 namespace OnboardingSIGDB1.Tests.Funcionarios
 {
@@ -30,6 +32,7 @@ namespace OnboardingSIGDB1.Tests.Funcionarios
             _faker = new Faker();
             funcionarioDto = new FuncionarioDto
             {
+                Id = _faker.Random.Int(min: 1, max: 100),
                 Nome = _faker.Person.FullName,
                 Cpf = _faker.Person.Cpf(),
                 DataContratacao = DateTime.Now
@@ -43,7 +46,7 @@ namespace OnboardingSIGDB1.Tests.Funcionarios
         [Fact]
         public async Task DeveEditarFuncionario()
         {
-            var funcionario = FuncionarioBuilder.Novo().ComId(1).Build();
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
             repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
             funcionarioDto.Cpf = funcionarioDto.Cpf.RemoverFormatacaoDocumento();
 
@@ -63,6 +66,110 @@ namespace OnboardingSIGDB1.Tests.Funcionarios
             await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
 
             Assert.True(notificationContext.Object.HasNotifications);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task NaoDeveAdicionarFuncionarioComNomeInvalido(string nome)
+        {
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
+            funcionarioDto.Nome = nome;
+            bool resultadoEsperado = true;
+
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoObrigatorio, Mensagens.CampoNome))), resultadoEsperado);
+        }
+
+        [Theory]
+        [InlineData(155)]
+        [InlineData(200)]
+        public async Task NaoDeveAdicionarFuncionarioComTamanhoMaximoDeNomeExcedido(int tamanho)
+        {
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
+            bool resultadoEsperado = true;
+            funcionarioDto.Nome = _faker.Lorem.Letter(tamanho);
+
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoNome, Mensagens.Tamanho150))), resultadoEsperado);
+        }
+
+        [Fact]
+        public async Task NaoDeveAdicionarFuncionarioComDataContratacaoMenorOuIgualAoValorMinimo()
+        {
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
+            bool resultadoEsperado = true;
+            funcionarioDto.DataContratacao = DateTime.MinValue;
+
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoDevePossuirTamanhoSuperior, Mensagens.CampoDataContratacao, funcionarioDto.DataContratacao.ToString()))), resultadoEsperado);
+        }
+
+        [Fact]
+        public async Task NaoDeveAdicionarFuncionarioSeTiverNotificacao()
+        {
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.True(notificationContext.Object.HasNotifications);
+        }
+
+        [Theory]
+        [InlineData("206.349.03098-4323")]
+        [InlineData("410.454.840-5923")]
+        [InlineData("174.5422.30-029")]
+        public async Task NaoDeveAdicionarFuncionarioComCpfDeTamanhoExcedido(string cpf)
+        {
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
+            bool resultadoEsperado = true;
+            funcionarioDto.Cpf = cpf;
+
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoComTamanhoMaximo, Mensagens.CampoCPF, Mensagens.Tamanho11))), resultadoEsperado);
+        }
+
+        [Theory]
+        [InlineData("20.349.03098")]
+        [InlineData("41.44.84-59")]
+        [InlineData("174.5422.00")]
+        public async Task NaoDeveAdicionarFuncionarioComCpfDeTamanhoAbaixoDoPermitido(string cpf)
+        {
+            var funcionario = FuncionarioBuilder.Novo().ComId(funcionarioDto.Id).Build();
+            repositorioBase.Setup(x => x.GetById(funcionarioDto.Id)).ReturnsAsync(funcionario);
+            bool resultadoEsperado = true;
+            funcionarioDto.Cpf = cpf;
+
+            await atualizadorDeFuncionarios.Atualizar(funcionarioDto);
+
+            repositorioBase.Verify(x => x.Add(It.IsAny<Funcionario>()), Times.Never);
+            Assert.Equal(notificationContext
+                .Object
+                .Notifications
+                .Any(x => x.Mensagem.Equals(string.Format(Mensagens.CampoComTamanhoFixo, Mensagens.CampoCPF, Mensagens.Tamanho11))), resultadoEsperado);
         }
     }
 }
