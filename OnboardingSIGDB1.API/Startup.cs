@@ -44,6 +44,8 @@ namespace OnboardingSIGDB1.API
                 .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddCors();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnboardingSIGDB1 API", Version = "v1" });
@@ -70,6 +72,7 @@ namespace OnboardingSIGDB1.API
             }
 
             app.AddCustomMiddleware();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
         }
     }
