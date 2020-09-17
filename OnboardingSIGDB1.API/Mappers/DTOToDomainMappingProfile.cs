@@ -14,11 +14,12 @@ namespace OnboardingSIGDB1.API.Mappers
         public DTOToDomainMappingProfile()
         {
             CreateMap<EmpresaFiltroDto, EmpresaFiltro>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => src.Cnpj.RemoverFormatacaoDocumento()));
-            CreateMap<EmpresaDto, Empresa>().ForMember(x => x.Cnpj, opt => opt.MapFrom(src => src.Cnpj.RemoverFormatacaoDocumento()));
+            CreateMap<EmpresaDto, Empresa>().AfterMap((src, dest) => dest.AtualizarCnpj(src.Cnpj.RemoverFormatacaoDocumento()));
             CreateMap<CargoDto, Cargo>();
-            CreateMap<FuncionarioDto, Funcionario>().ForMember(x => x.Cpf, opt => opt.MapFrom(src => src.Cpf.RemoverFormatacaoDocumento()));
+            CreateMap<FuncionarioDto, Funcionario>().AfterMap((src, dest) => dest.AtualizarCpf(src.Cpf.RemoverFormatacaoDocumento()));
             CreateMap<FuncionarioFiltroDto, FuncionarioFiltro>().ForMember(x => x.Cpf, opt => opt.MapFrom(src => src.Cpf.RemoverFormatacaoDocumento()));
             CreateMap<FuncionarioCargoDto, FuncionarioCargo>();
+            
         }
     }
 }
